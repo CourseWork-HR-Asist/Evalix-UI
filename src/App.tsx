@@ -1,7 +1,13 @@
-import { Alert } from "@material-tailwind/react";
+import { ThemeProvider } from "./features/themes/context/ThemeContext"
+import BasicDataRouter from "./routes/BasicDataRouter"
+
 
 function App() {
-  return <Alert>A simple alert for showing message</Alert>;
+  return (
+    <ThemeProvider>
+      <BasicDataRouter />
+    </ThemeProvider>
+  )
 }
 
 export default App
