@@ -55,7 +55,7 @@ export function NavbarWithSolidBackground() {
         className={`transition-all duration-500 ease-in-out border-none shadow-none px-4 py-2 lg:px-8
           ${
             isScrolled
-              ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-white/30 dark:bg-gray-900/30 hover:bg-white/90 dark:hover:bg-gray-900/90 shadow-md"
+              ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-gray-300/30 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-900/80 shadow-md dark:shadow-white/10"
               : "rounded-none bg-white dark:bg-gray-900"
           }
         `}
