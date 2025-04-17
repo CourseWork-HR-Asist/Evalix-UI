@@ -98,7 +98,18 @@ const HomePage: React.FC = () => {
             </motion.div>
           ))}
         </motion.div>
-
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="mb-12"
+        >
+          <button
+            className="bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300"
+          >
+            Get Started
+          </button>
+        </motion.div>
         <motion.p
           className="max-w-2xl text-gray-700 dark:text-gray-300 text-base md:text-lg px-4"
           initial={{ opacity: 0 }}
