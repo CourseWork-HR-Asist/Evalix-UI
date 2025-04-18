@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -34,6 +34,9 @@ export function NavbarWithSolidBackground() {
           as="li"
           variant="small"
           className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+          placeholder=""
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
         >
           <a href="#" className="flex items-center">
             {item}
@@ -59,6 +62,9 @@ export function NavbarWithSolidBackground() {
               : "rounded-none bg-white dark:bg-gray-900"
           }
         `}
+        placeholder=""
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -67,6 +73,9 @@ export function NavbarWithSolidBackground() {
               as="a"
               href="/"
               className="mr-4 cursor-pointer py-1.5 text-xl text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+              placeholder=""
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             >
               Evalix
             </Typography>
@@ -77,6 +86,9 @@ export function NavbarWithSolidBackground() {
             variant="text"
             className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
             onClick={() => setOpenNav(!openNav)}
+            placeholder=""
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           >
             {openNav ? (
               <XMarkIcon className="h-6 w-6" strokeWidth={2} />
