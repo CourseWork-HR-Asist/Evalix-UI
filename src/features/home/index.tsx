@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { NavbarWithSolidBackground } from "../../components/layout/NavBar";
 
 // Heroicons
 import {
@@ -43,8 +42,7 @@ const features = [
 
 const HomePage: React.FC = () => {
   return (
-    <div className="dark:bg-gray-900">
-      <NavbarWithSolidBackground />
+    
       <div className="flex flex-col items-center justify-center px-4 py-12 text-center bg-white dark:bg-gray-900 transition-colors duration-300">
         <motion.h1
           className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white"
@@ -123,7 +121,6 @@ const HomePage: React.FC = () => {
           </span>
         </motion.p>
       </div>
-    </div>
   );
 };
 

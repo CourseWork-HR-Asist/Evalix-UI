@@ -6,7 +6,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import ThemeToggleButton from "../../features/themes/ThemeToggleButton";
+import ThemeToggleButton from "../themes/ThemeToggleButton";
 
 export function NavbarWithSolidBackground() {
   const [openNav, setOpenNav] = useState(false);
@@ -28,9 +28,9 @@ export function NavbarWithSolidBackground() {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {["Home", "Account", "Blocks"].map((item) => (
+      {[{text: 'Home', url: '/'}, {text: 'About us', url: '/about'}, ].map((item) => (
         <Typography
-          key={item}
+          key={item.text}
           as="li"
           variant="small"
           className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
@@ -38,8 +38,8 @@ export function NavbarWithSolidBackground() {
           onPointerEnterCapture={() => {}}
           onPointerLeaveCapture={() => {}}
         >
-          <a href="#" className="flex items-center">
-            {item}
+          <a href={item.url} className="flex items-center">
+            {item.text}
           </a>
         </Typography>
       ))}
