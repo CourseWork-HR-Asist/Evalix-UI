@@ -1,12 +1,14 @@
-import { ThemeProvider } from "./features/themes/context/ThemeContext"
+import { ThemeProvider } from "./components/themes/context/ThemeContext"
 import BasicDataRouter from "./routes/BasicDataRouter"
-
+import GoogleAuthAppProvider from "./features/authorization/providers/GoogleAuthAppProvider"
 
 function App() {
   return (
-    <ThemeProvider>
-      <BasicDataRouter />
-    </ThemeProvider>
+    <GoogleAuthAppProvider>
+      <ThemeProvider>
+        <BasicDataRouter />
+      </ThemeProvider>
+    </GoogleAuthAppProvider>
   )
 }
 
