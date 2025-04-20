@@ -68,7 +68,7 @@ export function NavbarWithSolidBackground() {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <img src="./Evalix-Logo.png" alt="Logo" className="h-8 w-8 mr-2" />
+          <img src="/Evalix-Logo.png?v=1" alt="Logo" className="h-8 w-8 mr-2" />
             <Typography
               as="a"
               href="/"
