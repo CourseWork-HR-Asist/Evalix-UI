@@ -1,8 +1,9 @@
-import withMT from "@material-tailwind/react/utils/withMT";
+import { mtConfig } from "@material-tailwind/react";
 
-export default withMT({
+export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    //...mtConfig.theme,
     extend: {
       colors: {
         brand: {
@@ -11,7 +12,7 @@ export default withMT({
           200: "#80e0cf",
           300: "#4dd4bb",
           400: "#26cbb0",
-          500: "#01B399", // основний
+          500: "#01B399", 
           600: "#01a38a",
           700: "#019278",
           800: "#007f65",
@@ -20,5 +21,5 @@ export default withMT({
       },
     },
   },
-  plugins: [],
-});
+  plugins: [mtConfig],
+};
