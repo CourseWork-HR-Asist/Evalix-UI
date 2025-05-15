@@ -7,10 +7,12 @@ import {
 import Layout from "../components/layout/MainLayout";
 import NotFoundPage from "../components/NotFoundPage";
 import Root from "../components/Root";
-import HomePage from "../features/home/";
+import HomePage from "../features/home";
 import AboutUs from "../features/aboutUs";
 import PublicLayout from "../components/layout/PublicLayout";
 import AuthPage from "../features/authorization";
+import Dashboard from "../features/dashboard";
+import { SkillPage } from "../features/skill/index";
 
 const BasicDataRouter = () => {
   const router = createBrowserRouter(
@@ -22,8 +24,10 @@ const BasicDataRouter = () => {
         </Route>
         <Route path="/auth" Component={AuthPage}/>
         <Route path="/" Component={Layout}>
-          <Route path="*" Component={NotFoundPage} />
+          <Route path="/dashboard" Component={Dashboard} />
+          <Route path="/skill" Component={SkillPage} />
         </Route>
+        <Route path="*" Component={NotFoundPage} />
       </Route>
     )
   );
