@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 // Heroicons
 import {
   DocumentMagnifyingGlassIcon,
@@ -41,6 +41,7 @@ const features = [
   ];
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     
       <div className="flex flex-col items-center justify-center px-4 py-12 text-center bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -104,6 +105,7 @@ const HomePage: React.FC = () => {
         >
           <button
             className="bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300"
+            onClick={()=> navigate("/auth")}
           >
             Get Started
           </button>
