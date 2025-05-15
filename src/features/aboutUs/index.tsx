@@ -10,8 +10,7 @@ export default function AboutUs() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Card
-          className="max-w-3xl w-full p-6 md:p-10 rounded-xl shadow-lg bg-white dark:bg-gray-800"
-        >
+          className="max-w-3xl w-full p-6 md:p-10 rounded-xl shadow-lg bg-white dark:bg-gray-800" placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -55,13 +55,10 @@ export function NavbarWithSolidBackground() {
     >
       <Navbar
         className={`w-full transition-all duration-500 ease-in-out border-none shadow-none px-4 py-2 lg:px-8
-          ${
-            isScrolled
-              ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-gray-300/30 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-900/80 shadow-md dark:shadow-white/10"
-              : "rounded-none bg-white dark:bg-gray-900"
-          }
-        `}
-      >
+          ${isScrolled
+            ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-gray-300/30 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-900/80 shadow-md dark:shadow-white/10"
+            : "rounded-none bg-white dark:bg-gray-900"}
+        `} placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Typography
@@ -80,10 +77,9 @@ export function NavbarWithSolidBackground() {
           <div className="mr-4 hidden lg:block">{navList}</div>
 
           <IconButton
-            variant="ghost"
+            type="button"
             className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-            onClick={() => setOpenNav(!openNav)}
-          >
+            onClick={() => setOpenNav(!openNav)} placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
             {openNav ? (
               <XMarkIcon className="h-6 w-6" strokeWidth={2} />
             ) : (
