@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
 import { store } from './store/index.ts'
-import GoogleAuthAppProvider from "./features/authorization/providers/GoogleAuthAppProvider"
+import GoogleAuthAppProvider from "./features/authorization/providers/GoogleAuthAppProvider.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

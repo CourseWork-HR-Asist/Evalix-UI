@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-export class Http {
+export class HttpClient {
   private axiosInstance: AxiosInstance;
   private signal?: AbortSignal;
   private accessToken: string = localStorage.getItem("access_token") || "";
@@ -57,12 +57,8 @@ export class Http {
     return this.request<T>({ method: "PUT", url, data, ...config });
   }
 
-  public async delete<T, D>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
-    return this.request<T>({ method: "DELETE", url, data, ...config });
+  public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.request<T>({ method: "DELETE", url, ...config });
   }
 
   public async uploadFile<T, D>(
