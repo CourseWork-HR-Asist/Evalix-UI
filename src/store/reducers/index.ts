@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-// import { signReducer } from '../../features/user-pages/store/reducer';
+import skillSlice from '../../features/skill/store/skill.slice';
 
 export const rootReducer = combineReducers({
-    // sign: signReducer,
+    skill: skillSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
