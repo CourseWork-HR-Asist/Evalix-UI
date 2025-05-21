@@ -2,9 +2,25 @@ import { Typography, Card } from "@material-tailwind/react";
 import { CredentialResponse } from "@react-oauth/google";
 import { motion } from "framer-motion";
 import GoogleAuthButton from "./components/GoogleAuthButton";
-import { jwtDecode } from "jwt-decode";
-
+import { useUserSlice } from "./hooks/useUser";
+import {useNavigate} from "react-router-dom";
 export default function AuthPage() {
+
+  const { googleAuth } = useUserSlice();
+  const navigate = useNavigate();
+
+  const onSuccess = async (credentialResponse: CredentialResponse) => {
+    
+    const result = await googleAuth({token: credentialResponse.credential!});
+    if(result?.meta.requestStatus === 'fulfilled') {
+      navigate('/dashboard');
+    }
+  };
+
+  const onError = () => {
+    console.error("Login failed");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <motion.div
@@ -31,18 +47,8 @@ export default function AuthPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <GoogleAuthButton
-              onSuccess={(credentialResponse: CredentialResponse) => {
-                console.log(credentialResponse);
-                if (credentialResponse.credential) {
-                  const decodedToken = jwtDecode(credentialResponse.credential);
-                  console.log(decodedToken);
-                } else {
-                  console.error("Credential is undefined");
-                }
-              }}
-              onError={() => {
-                console.error("Login failed");
-              }}
+                onSuccess={onSuccess}
+                onError={onError}
             />
           </motion.div>
           <motion.div

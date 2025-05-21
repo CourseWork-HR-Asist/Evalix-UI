@@ -40,10 +40,12 @@ const SkillPage: React.FC = () => {
     setModalOpen(false);
     setActiveSkill(null);
   };
-
-  const filteredSkills = skills.filter((s: Skill) =>
-    s.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const onCloseHandler = () => {
+    setModalOpen(false)
+  };
+  const filteredSkills = Array.isArray(skills) 
+    ? skills.filter((s: Skill) => s.title.toLowerCase().includes(search.toLowerCase()))
+    : [];
 
   if (loading) {
     return (
@@ -65,7 +67,7 @@ const SkillPage: React.FC = () => {
             />
             <SkillModal
                 open={modalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={onCloseHandler}
                 modalType={modalType}
                 activeSkill={activeSkill}
                 onSubmit={handleSubmit}
