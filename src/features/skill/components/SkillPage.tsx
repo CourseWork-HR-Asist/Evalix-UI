@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ContentCard } from "../../../components/cards/ContentCard";
+import { ContentCard } from "../../../components/ui/cards/ContentCard";
 import { useSkillSlice } from "../hooks/useSkill";
 import { Skill } from "../services/type";
 import { SkillHeader } from "./SkillHeader";
 import { SearchInput } from "../../../components/form/SearchInput";
 import { SkillModal } from "./SkillModal";
 import SkillTable from "./SkillTable";
-import Loader from "../../../components/Loader";
+import Loader from "../../../components/ui/loader/Loader";
 
 const SkillPage: React.FC = () => {
   const { skills, loading, getSkills, addSkill, editSkill, removeSkill } = useSkillSlice();

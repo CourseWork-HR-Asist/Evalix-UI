@@ -1,14 +1,15 @@
 import FormInput from "../../../components/form/FormInput";
 import { useForm } from "react-hook-form";
 import { Skill } from "../services/type";
-import React from 'react';
+import React from "react";
 import { Xmark } from "iconoir-react";
-import BaseModal from "../../../components/modals/BaseModal";
+import BaseModal from "../../../components/ui/modals/BaseModal";
+import { FormInputContainer } from "../../../components/form/containers/FormInputContainer";
 
 interface SkillModalProps {
   open: boolean;
   onClose: () => void;
-  modalType: 'create' | 'edit';
+  modalType: "create" | "edit";
   activeSkill: Skill | null;
   onSubmit: (data: Skill) => Promise<void>;
 }
@@ -18,23 +19,23 @@ export const SkillModal: React.FC<SkillModalProps> = ({
   onClose,
   modalType,
   activeSkill,
-  onSubmit
+  onSubmit,
 }) => {
-  const { 
-    control, 
-    handleSubmit, 
-    reset, 
-    formState: { isSubmitting } 
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
   } = useForm<Skill>({
-    defaultValues: { 
-      title: '',
-      ...(activeSkill || {})
-    }
+    defaultValues: {
+      title: "",
+      ...(activeSkill || {}),
+    },
   });
 
   React.useEffect(() => {
     if (open) {
-      reset(activeSkill || { title: '' });
+      reset(activeSkill || { title: "" });
     }
   }, [open, activeSkill, reset]);
 
@@ -42,7 +43,7 @@ export const SkillModal: React.FC<SkillModalProps> = ({
     <BaseModal open={open} handler={onClose}>
       <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#333333]">
         <h3 className="text-xl font-semibold text-gray-800 dark:text-[#E0E0E0]">
-          {modalType === 'create' ? 'Create skill' : 'Edit skill'}
+          {modalType === "create" ? "Create skill" : "Edit skill"}
         </h3>
         <button
           type="button"
@@ -54,15 +55,15 @@ export const SkillModal: React.FC<SkillModalProps> = ({
         </button>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="p-4 border-b border-gray-200 dark:border-[#333333]">
+        <FormInputContainer>
           <FormInput<Skill>
             name="title"
             type="text"
             placeholder="Skill name"
             control={control}
-            rules={{ required: 'Please enter skill name' }}
+            rules={{ required: "Please enter skill name" }}
           />
-        </div>
+        </FormInputContainer>
         <div className="flex justify-end gap-2 p-4">
           <button
             type="button"
@@ -77,7 +78,11 @@ export const SkillModal: React.FC<SkillModalProps> = ({
             disabled={isSubmitting}
             className="px-4 py-2 bg-[#01B399] text-white hover:bg-[#019d87] rounded-lg transition-colors disabled:opacity-50"
           >
-            {isSubmitting ? 'Saving...' : (modalType === 'create' ? 'Create' : 'Save')}
+            {isSubmitting
+              ? "Saving..."
+              : modalType === "create"
+                ? "Create"
+                : "Save"}
           </button>
         </div>
       </form>
