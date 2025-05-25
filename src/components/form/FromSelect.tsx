@@ -1,24 +1,29 @@
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 
-interface FormInputProps<TFieldValues extends FieldValues = FieldValues> {
+interface SelectOption {
+  label: string;
+  value: string | number;
+}
+
+interface FromSelectProps<TFieldValues extends FieldValues = FieldValues> {
   name: Path<TFieldValues>;
   label?: string;
-  type?: string;
   placeholder?: string;
   control: Control<TFieldValues>;
   rules?: Record<string, unknown>;
   defaultValue?: TFieldValues[Path<TFieldValues>];
+  options: SelectOption[];
 }
 
-function FormInput<TFieldValues extends FieldValues = FieldValues>({
+function FromSelect<TFieldValues extends FieldValues = FieldValues>({
   name,
   label,
-  type = "text",
-  placeholder = "",
+  placeholder = "Select option",
   control,
   rules = {},
   defaultValue,
-}: FormInputProps<TFieldValues>) {
+  options = [],
+}: FromSelectProps<TFieldValues>) {
   return (
     <div>
       <div className="relative">
@@ -30,10 +35,8 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
           defaultValue={defaultValue}
           render={({ field, fieldState: { error } }) => (
             <>
-              <input
+              <select
                 {...field}
-                type={type}
-                placeholder={placeholder}
                 className={`w-full px-4 py-2 rounded-lg border ${
                   error
                     ? "border-red-500 focus:border-red-500"
@@ -42,7 +45,14 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
                    dark:border-[#3A3A3A] dark:focus:border-[#01B399] dark:bg-[#2A2A2A] dark:text-gray-200 dark:placeholder-gray-500`}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${name}-error` : undefined}
-              />
+              >
+                <option value="">{placeholder}</option>
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
               {error && (
                 <p
                   id={`${name}-error`}
@@ -60,4 +70,4 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
   );
 }
 
-export default FormInput;
+export default FromSelect;

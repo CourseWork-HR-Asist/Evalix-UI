@@ -1,24 +1,45 @@
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
+import { useGetByPathQuery } from "../../hooks/useReduxHooks";
 
-interface FormInputProps<TFieldValues extends FieldValues = FieldValues> {
+interface Option {
+  id: number | string;
+  name: string;
+}
+
+interface FormApiSelectProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TOption extends Option = Option,
+> {
   name: Path<TFieldValues>;
   label?: string;
-  type?: string;
   placeholder?: string;
   control: Control<TFieldValues>;
   rules?: Record<string, unknown>;
   defaultValue?: TFieldValues[Path<TFieldValues>];
+  path: string;
+  mapOption?: (option: TOption) => { label: string; value: string | number };
 }
 
-function FormInput<TFieldValues extends FieldValues = FieldValues>({
+function FormApiSelect<
+  TFieldValues extends FieldValues = FieldValues,
+  TOption extends Option = Option,
+>({
   name,
   label,
-  type = "text",
-  placeholder = "",
+  placeholder = "Select option",
   control,
   rules = {},
   defaultValue,
-}: FormInputProps<TFieldValues>) {
+  path,
+  mapOption = (option) => ({
+    label: option.name,
+    value: option.id,
+  }),
+}: FormApiSelectProps<TFieldValues, TOption>) {
+  const result = useGetByPathQuery(path);
+  const { isLoading, isError } = result;
+  const data = (result.data as TOption[]) || [];
+
   return (
     <div>
       <div className="relative">
@@ -30,10 +51,8 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
           defaultValue={defaultValue}
           render={({ field, fieldState: { error } }) => (
             <>
-              <input
+              <select
                 {...field}
-                type={type}
-                placeholder={placeholder}
                 className={`w-full px-4 py-2 rounded-lg border ${
                   error
                     ? "border-red-500 focus:border-red-500"
@@ -42,7 +61,18 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
                    dark:border-[#3A3A3A] dark:focus:border-[#01B399] dark:bg-[#2A2A2A] dark:text-gray-200 dark:placeholder-gray-500`}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${name}-error` : undefined}
-              />
+                disabled={isLoading || isError}
+              >
+                <option value="">{placeholder}</option>
+                {data.map((option) => {
+                  const { label, value } = mapOption(option);
+                  return (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  );
+                })}
+              </select>
               {error && (
                 <p
                   id={`${name}-error`}
@@ -60,4 +90,4 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
   );
 }
 
-export default FormInput;
+export default FormApiSelect;
