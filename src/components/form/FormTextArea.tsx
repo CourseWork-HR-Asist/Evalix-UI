@@ -1,24 +1,24 @@
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 
-interface FormInputProps<TFieldValues extends FieldValues = FieldValues> {
+interface FormTextAreaProps<TFieldValues extends FieldValues = FieldValues> {
   name: Path<TFieldValues>;
   label?: string;
-  type?: string;
   placeholder?: string;
+  rows?: number;
   control: Control<TFieldValues>;
   rules?: Record<string, unknown>;
   defaultValue?: TFieldValues[Path<TFieldValues>];
 }
 
-function FormInput<TFieldValues extends FieldValues = FieldValues>({
+function FormTextArea<TFieldValues extends FieldValues = FieldValues>({
   name,
   label,
-  type = "text",
   placeholder = "",
+  rows = 4,
   control,
   rules = {},
   defaultValue,
-}: FormInputProps<TFieldValues>) {
+}: FormTextAreaProps<TFieldValues>) {
   return (
     <div>
       <div className="relative">
@@ -30,9 +30,9 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
           defaultValue={defaultValue}
           render={({ field, fieldState: { error } }) => (
             <>
-              <input
+              <textarea
                 {...field}
-                type={type}
+                rows={rows}
                 placeholder={placeholder}
                 className={`w-full px-4 py-2 rounded-lg border ${
                   error
@@ -60,4 +60,4 @@ function FormInput<TFieldValues extends FieldValues = FieldValues>({
   );
 }
 
-export default FormInput;
+export default FormTextArea;
