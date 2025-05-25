@@ -1,6 +1,6 @@
 import { UserPlus } from "iconoir-react";
 import { Typography } from "@material-tailwind/react";
-import ActionButton from "../../../components/buttons/ActionButton";
+import ActionButton from "../../../components/ui/buttons/ActionButton";
 
 interface SkillHeaderProps {
   onAddClick: () => void;

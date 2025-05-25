@@ -8,30 +8,28 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import ThemeToggleButton from "../../themes/ThemeToggleButton";
 
-export function NavbarWithSolidBackground() {
-  const [openNav, setOpenNav] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+function Logo() {
+  return (
+    <Typography
+      as="a"
+      href="/"
+      className="text-xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-gray-200 transition-colors flex items-center"
+    >
+      <img src="/Evalix-Logo.png?v=1" alt="Logo" className="h-8 w-8 mr-2" />
+      Evalix
+    </Typography>
+  );
+}
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+function NavLinks() {
+  const links = [
+    { text: "Home", url: "/" },
+    { text: "About us", url: "/about" },
+  ];
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (window.innerWidth >= 960) setOpenNav(false);
-    });
-  }, []);
-
-  const navList = (
+  return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {[
-        { text: "Home", url: "/" },
-        { text: "About us", url: "/about" },
-      ].map((item) => (
+      {links.map((item) => (
         <Typography
           key={item.text}
           as="li"
@@ -46,6 +44,47 @@ export function NavbarWithSolidBackground() {
       <ThemeToggleButton />
     </ul>
   );
+}
+
+function MobileMenuToggle({ openNav, setOpenNav }: { openNav: boolean; setOpenNav: (val: boolean) => void }) {
+  return (
+    <IconButton
+      type="button"
+      className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+      onClick={() => setOpenNav(!openNav)}
+      placeholder={undefined}
+      onResize={undefined}
+      onResizeCapture={undefined}
+      onPointerEnterCapture={undefined}
+      onPointerLeaveCapture={undefined}
+    >
+      {openNav ? (
+        <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+      ) : (
+        <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+      )}
+    </IconButton>
+  );
+}
+
+
+export function NavbarWithSolidBackground() {
+  const [openNav, setOpenNav] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 960) setOpenNav(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div
@@ -54,40 +93,30 @@ export function NavbarWithSolidBackground() {
       `}
     >
       <Navbar
-        className={`w-full transition-all duration-500 ease-in-out border-none shadow-none px-4 py-2 lg:px-8
-          ${isScrolled
-            ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-gray-300/30 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-900/80 shadow-md dark:shadow-white/10"
-            : "rounded-none bg-white dark:bg-gray-900"}
-        `} placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      >
+        placeholder={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
+        fullWidth
+        className={`transition-all duration-500 ease-in-out border-none shadow-none px-4 py-2 lg:px-8
+          ${
+            isScrolled
+              ? "rounded-xl lg:rounded-2xl backdrop-blur-md bg-gray-300/30 dark:bg-gray-800/30 hover:bg-gray-100/80 dark:hover:bg-gray-900/80 shadow-md dark:shadow-white/10"
+              : "rounded-none bg-white dark:bg-gray-900"
+          }
+        `}
+      >
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <Typography
-              as="a"
-              href="/"
-              className="text-xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-gray-200 transition-colors flex items-center"
-            >
-              <img
-                src="/Evalix-Logo.png?v=1"
-                alt="Logo"
-                className="h-8 w-8 mr-2"
-              />
-              Evalix
-            </Typography>
+          <Logo />
+          <div className="mr-4 hidden lg:block">
+            <NavLinks />
           </div>
-          <div className="mr-4 hidden lg:block">{navList}</div>
-
-          <IconButton
-            type="button"
-            className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-            onClick={() => setOpenNav(!openNav)} placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
-            {openNav ? (
-              <XMarkIcon className="h-6 w-6" strokeWidth={2} />
-            ) : (
-              <Bars3Icon className="h-6 w-6" strokeWidth={2} />
-            )}
-          </IconButton>
+          <MobileMenuToggle openNav={openNav} setOpenNav={setOpenNav} />
         </div>
-        <Collapse open={openNav}>{navList}</Collapse>
+        <Collapse open={openNav}>
+          <NavLinks />
+        </Collapse>
       </Navbar>
     </div>
   );

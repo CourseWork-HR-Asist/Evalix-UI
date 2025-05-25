@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../../hooks/usereduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useReduxHooks";
 import {
     fetchSkills,
     createSkill,

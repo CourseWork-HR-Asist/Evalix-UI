@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ContentCard } from "../../../components/cards/ContentCard";
+import { ContentCard } from "../../../components/ui/cards/ContentCard";
 import { useSkillSlice } from "../hooks/useSkill";
 import { Skill } from "../services/type";
 import { SkillHeader } from "./SkillHeader";
 import { SearchInput } from "../../../components/form/SearchInput";
 import { SkillModal } from "./SkillModal";
 import SkillTable from "./SkillTable";
-import Loader from "../../../components/Loader";
+import Loader from "../../../components/ui/loader/Loader";
 
 const SkillPage: React.FC = () => {
   const { skills, loading, getSkills, addSkill, editSkill, removeSkill } = useSkillSlice();
@@ -40,10 +40,12 @@ const SkillPage: React.FC = () => {
     setModalOpen(false);
     setActiveSkill(null);
   };
-
-  const filteredSkills = skills.filter((s: Skill) =>
-    s.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const onCloseHandler = () => {
+    setModalOpen(false)
+  };
+  const filteredSkills = Array.isArray(skills) 
+    ? skills.filter((s: Skill) => s.title.toLowerCase().includes(search.toLowerCase()))
+    : [];
 
   if (loading) {
     return (
@@ -65,7 +67,7 @@ const SkillPage: React.FC = () => {
             />
             <SkillModal
                 open={modalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={onCloseHandler}
                 modalType={modalType}
                 activeSkill={activeSkill}
                 onSubmit={handleSubmit}

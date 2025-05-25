@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Skill } from "../services/type";
 import { EditPencil, Trash, Xmark } from "iconoir-react";
-import BaseModal from "../../../components/modals/BaseModal";
+import BaseModal from "../../../components/ui/modals/BaseModal";
 
 const TABLE_HEAD = ["Skill", "Actions"];
 

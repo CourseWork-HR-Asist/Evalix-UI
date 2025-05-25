@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Skill } from "../services/type";
-import { skillService } from "../services/skill.service";
+import { createSkillService } from "../services/skill.service";
 
 type SkillState = {
   list: Skill[];
@@ -16,28 +16,32 @@ const initialState: SkillState = {
 
 const fetchSkills = createAsyncThunk<Skill[]>(
   "skills/fetchAll",
-  async () => {
+  async (_, { signal }) => {
+    const skillService = createSkillService(signal);
     return await skillService.getAll();
   }
 );
 
 const createSkill = createAsyncThunk<Skill, Skill>(
   "skills/create",
-  async (data) => {
+  async (data, { signal }) => {
+    const skillService = createSkillService(signal);
     return await skillService.create(data);
   }
 );
 
 const updateSkill = createAsyncThunk<Skill, Skill>(
   "skills/update",
-  async (data) => {
+  async (data, { signal }) => {
+    const skillService = createSkillService(signal);
     return await skillService.update(data);
   }
 );
 
 const deleteSkill = createAsyncThunk<string, string>(
   "skills/delete",
-  async (id) => {
+  async (id, { signal }) => {
+    const skillService = createSkillService(signal);
     await skillService.remove(id);
     return id;
   }

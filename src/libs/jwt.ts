@@ -2,10 +2,10 @@ import { jwtDecode } from 'jwt-decode'
 
 interface Token {
   exp: number
-  given_name: string
-  family_name: string
   unique_name: string
-  email: string
+  email: string,
+  sub: string // roleid
+  role: string
 }
 
 export const parseJwt = (token: string): Token | null => {
