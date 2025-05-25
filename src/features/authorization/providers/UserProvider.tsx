@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from "react";
-import { useAppDispatch } from "../../../hooks/usereduxHooks";
+import { useAppDispatch } from "../../../hooks/useReduxHooks";
 import { createUserService } from "../services/user.service";
 import { setCurrentUser } from "../store/user.slice";
 import { parseJwt } from "../../../libs/jwt";

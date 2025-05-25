@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
 import { useUserSlice } from "../../../features/authorization/hooks/useUser";
-import { useAppDispatch } from "../../../hooks/usereduxHooks";
+import { useAppDispatch } from "../../../hooks/useReduxHooks";
 import { setCurrentUser } from "../../../features/authorization/store/user.slice";
 import ThemeToggleButton from "../../themes/ThemeToggleButton";
 import { NavLogo } from "./shared/NavLogo";

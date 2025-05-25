@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode, useEffect } from "react";
 import { ThemeProvider as MaterialThemeProvider } from "@material-tailwind/react";
-import { useAppDispatch, useAppSelector } from "../../../hooks/usereduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useReduxHooks";
 import {
   toggleTheme as toggleThemeAction,
   setTheme as setThemeAction,

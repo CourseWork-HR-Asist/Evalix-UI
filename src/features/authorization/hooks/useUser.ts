@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../../hooks/usereduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useReduxHooks";
 import { GoogleAuthResponse } from "../services/type";
 import { fetchUsers, googleAuth as googleAuthAction, setCurrentUser} from "../store/user.slice";
 
