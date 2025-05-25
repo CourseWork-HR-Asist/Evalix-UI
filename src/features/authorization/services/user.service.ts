@@ -10,12 +10,12 @@ export const createUserService = (signal?: AbortSignal) => {
   return {
     getAll: () => httpClient.get<User[]>("/users/v1/user/get-all"),
     getById: (id: string) => 
-      httpClient.get<User>(`/users/v1/user/${id}`, undefined, {
+      httpClient.get<User>(`/users/v1/user/get-by-id/${id}`, undefined, {
         showSuccessToast: false,
-        errorMessage: 'Failed to fetch user data'
+        errorMessage: 'Failed to fetch user data, please try relogin or a few minutes later'
       }),
     googleAuth: (data: GoogleAuthResponse) => 
-      httpClient.post<UserWithToken>("/users/v1/user/google-auth/login-with-google", data),
+      httpClient.post<UserWithToken>("/users/v1/user/login-with-google", data),
     setToken: (token: string) => httpClient.setToken(token),
     getToken: () => httpClient.getToken(),
   };
