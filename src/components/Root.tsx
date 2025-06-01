@@ -1,36 +1,37 @@
-import { FC, ReactNode } from 'react'
-import { Outlet } from 'react-router-dom'
-// import HttpClient from '../lib/http'
-// import { isTokenExpired } from '../lib/jwt'
+import { FC, ReactNode } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { HttpClient } from "../libs/http";
+import { isTokenExpired } from "../libs/jwt";
 
-// const routesWithNoAuth = ['/login', '/register']
+const routesWithNoAuth = ["/", "/about", "/auth"];
 
 interface AuthRedirectorProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const AuthRedirector: FC<AuthRedirectorProps> = ({ children }) => {
-//   const location = useLocation()
-//   const httpClient = new HttpClient()
+  const location = useLocation();
+  const httpClient = new HttpClient({ baseURL: "" });
+  const isAuthenticated = isTokenExpired(httpClient.getToken());
 
-//   if (!isTokenExpired(httpClient.getToken())) {
-//     if (!routesWithNoAuth.includes(location.pathname))
-//       return <Navigate to="/login" state={{ from: location }} replace />
-//   } else {
-//     if (routesWithNoAuth.includes(location.pathname)) {
-//       if (location.state?.from)
-//         return <Navigate to={location.state.from} replace />
-//       return <Navigate to="/" replace />
-//     }
-//   }
-
-  return children
-}
+  if (isAuthenticated) {
+    if (location.pathname === "/auth") {
+      return <Navigate to="/dashboard" replace />;
+    }
+  } else {
+    if (!routesWithNoAuth.includes(location.pathname)) {
+      return <Navigate to="/auth" state={{ from: location }} replace />;
+    }
+  }
+  return children;
+};
 
 const Root = () => {
-  return <AuthRedirector>
-    <Outlet />
-  </AuthRedirector>
-}
+  return (
+    <AuthRedirector>
+      <Outlet />
+    </AuthRedirector>
+  );
+};
 
-export default Root
+export default Root;

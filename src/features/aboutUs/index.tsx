@@ -10,11 +10,7 @@ export default function AboutUs() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <Card
-          className="max-w-3xl w-full p-6 md:p-10 rounded-xl shadow-lg bg-white dark:bg-gray-800"
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
-        >
+          className="max-w-3xl w-full p-6 md:p-10 rounded-xl shadow-lg bg-white dark:bg-gray-800" placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -23,9 +19,6 @@ export default function AboutUs() {
             <Typography
               variant="h4"
               className="mb-4 text-gray-900 dark:text-white text-center"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
             >
               About Us
             </Typography>
@@ -38,9 +31,6 @@ export default function AboutUs() {
           >
             <Typography
               className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
             >
               Evalix is a learning project built for educational purposes. It
               focuses on improving skills in frontend development, user
@@ -50,9 +40,6 @@ export default function AboutUs() {
 
             <Typography
               className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
             >
               This project is not intended for any commercial use. It is not
               meant for sale, advertising, or collecting any user data.
@@ -62,9 +49,6 @@ export default function AboutUs() {
 
             <Typography
               className="text-gray-700 dark:text-gray-300 leading-relaxed"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
             >
               If you notice any issues or have suggestions for improvement, feel
               free to reach out. Thanks for visiting!

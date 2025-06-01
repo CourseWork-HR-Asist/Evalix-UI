@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { NavbarWithSolidBackground } from './NavBar'
+import { NavbarWithSolidBackground } from './navigators/NavBar'
 
 const PublicLayout = () => {
   return <>
