@@ -27,7 +27,7 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }: ThemeContextProps) => {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.user.theme);
+  const theme = useAppSelector((state: { user: { theme: 'light' | 'dark' } }) => state.user.theme);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;

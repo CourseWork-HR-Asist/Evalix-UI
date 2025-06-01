@@ -10,9 +10,9 @@ import { Skill } from "../services/type";
 export const useSkillSlice = () => {
   const dispatch = useAppDispatch();
 
-  const skills = useAppSelector((state) => state.skill.list);
-  const loading = useAppSelector((state) => state.skill.loading);
-  const error = useAppSelector((state) => state.skill.error);
+  const skills = useAppSelector((state: { skill: { list: Skill[] } }) => state.skill.list);
+  const loading = useAppSelector((state: { skill: { loading: boolean } }) => state.skill.loading);
+  const error = useAppSelector((state: { skill: { error: string | null } }) => state.skill.error);
 
   const getSkills = () => dispatch(fetchSkills());
   const addSkill = (data: Skill) => dispatch(createSkill(data));

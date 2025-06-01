@@ -1,15 +1,15 @@
 import { useAppDispatch, useAppSelector } from "../../../hooks/useReduxHooks";
-import { GoogleAuthResponse } from "../services/type";
+import { GoogleAuthResponse, User } from "../services/type";
 import { fetchUsers, googleAuth as googleAuthAction, setCurrentUser} from "../store/user.slice";
 
 
 export const useUserSlice = () => {
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector((state) => state.user.currentUser);
-  const loading = useAppSelector((state) => state.user.loading);
-  const error = useAppSelector((state) => state.user.error);
-  const users = useAppSelector((state) => state.user.list);
+  const user = useAppSelector((state: { user: { currentUser: (User & { token: string }) | null } }) => state.user.currentUser);
+  const loading = useAppSelector((state: { user: { loading: boolean } }) => state.user.loading);
+  const error = useAppSelector((state: { user: { error: string | null } }) => state.user.error);
+  const users = useAppSelector((state: { user: { list: User[] } }) => state.user.list);
 
   const getUsers = () => dispatch(fetchUsers());
   const handleGoogleAuth = async (token: GoogleAuthResponse) => {
