@@ -3,17 +3,15 @@ import { CredentialResponse } from "@react-oauth/google";
 import { motion } from "framer-motion";
 import GoogleAuthButton from "./components/GoogleAuthButton";
 import { useUserSlice } from "./hooks/useUser";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function AuthPage() {
-
   const { googleAuth } = useUserSlice();
   const navigate = useNavigate();
 
   const onSuccess = async (credentialResponse: CredentialResponse) => {
-    
-    const result = await googleAuth({token: credentialResponse.credential!});
-    if(result?.meta.requestStatus === 'fulfilled') {
-      navigate('/dashboard');
+    const result = await googleAuth({ token: credentialResponse.credential! });
+    if (result?.meta.requestStatus === "fulfilled") {
+      navigate("/dashboard");
     }
   };
 
@@ -28,7 +26,14 @@ export default function AuthPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <Card className="max-w-3xl w-full p-8 md:p-12 rounded-3xl shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700" placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Card
+          className="max-w-3xl w-full p-8 md:p-12 rounded-3xl shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+          placeholder={undefined}
+          onResize={undefined}
+          onResizeCapture={undefined}
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,10 +51,7 @@ export default function AuthPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <GoogleAuthButton
-                onSuccess={onSuccess}
-                onError={onError}
-            />
+            <GoogleAuthButton onSuccess={onSuccess} onError={onError} />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -60,7 +62,7 @@ export default function AuthPage() {
               variant="small"
               className="text-center text-gray-600 dark:text-gray-400 mt-4"
             >
-              Yes, we have only one method of entry. Is there a problem?
+              Yes, we have only one method of entry.
             </Typography>
           </motion.div>
         </Card>
