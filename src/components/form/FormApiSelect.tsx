@@ -1,14 +1,14 @@
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 import { useGetByPathQuery } from "../../hooks/useReduxHooks";
 
-interface Option {
+interface BaseOption {
   id: number | string;
-  name: string;
+  [key: string]: any; 
 }
 
 interface FormApiSelectProps<
   TFieldValues extends FieldValues = FieldValues,
-  TOption extends Option = Option,
+  TOption extends BaseOption = BaseOption
 > {
   name: Path<TFieldValues>;
   label?: string;
@@ -22,7 +22,7 @@ interface FormApiSelectProps<
 
 function FormApiSelect<
   TFieldValues extends FieldValues = FieldValues,
-  TOption extends Option = Option,
+  TOption extends BaseOption = BaseOption,
 >({
   name,
   label,
@@ -43,7 +43,7 @@ function FormApiSelect<
   return (
     <div>
       <div className="relative">
-        <label htmlFor={name}>{label}</label>
+        <label htmlFor={name} className="text-gray-700 dark:text-gray-300">{label}</label>
         <Controller
           name={name}
           control={control}
@@ -55,19 +55,19 @@ function FormApiSelect<
                 {...field}
                 className={`w-full px-4 py-2 rounded-lg border ${
                   error
-                    ? "border-red-500 focus:border-red-500"
-                    : "border-gray-300 focus:border-[#01B399]"
-                } focus:outline-none text-black placeholder-gray-500
-                   dark:border-[#3A3A3A] dark:focus:border-[#01B399] dark:bg-[#2A2A2A] dark:text-gray-200 dark:placeholder-gray-500`}
+                    ? "border-red-500 focus:border-red-500 dark:border-red-400 dark:focus:border-red-400"
+                    : "border-gray-300 focus:border-[#01B399] dark:border-[#3A3A3A] dark:focus:border-[#01B399]"
+                } focus:outline-none text-gray-800 placeholder-gray-500
+                   dark:bg-[#2A2A2A] dark:text-gray-200 dark:placeholder-gray-400 appearance-none`}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${name}-error` : undefined}
                 disabled={isLoading || isError}
               >
-                <option value="">{placeholder}</option>
+                <option value="" className="dark:bg-[#2A2A2A] dark:text-gray-300">{placeholder}</option>
                 {data.map((option) => {
                   const { label, value } = mapOption(option);
                   return (
-                    <option key={value} value={value}>
+                    <option key={value} value={value} className="dark:bg-[#2A2A2A] dark:text-gray-300">
                       {label}
                     </option>
                   );
@@ -76,7 +76,7 @@ function FormApiSelect<
               {error && (
                 <p
                   id={`${name}-error`}
-                  className="text-red-500 text-xs mt-1"
+                  className="text-red-500 dark:text-red-400 text-xs mt-1"
                   role="alert"
                 >
                   {error.message || "This field is required"}
