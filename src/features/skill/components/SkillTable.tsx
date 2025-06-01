@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Skill } from "../services/type";
-import { EditPencil, Trash, Xmark } from "iconoir-react";
-import BaseModal from "../../../components/ui/modals/BaseModal";
+import { EditPencil, Trash } from "iconoir-react";
+import DeleteConfirmationModal from "../../../components/ui/modals/DeleteConfirmationModal";
 
 const TABLE_HEAD = ["Skill", "Actions"];
 
@@ -91,45 +91,13 @@ const SkillTable = ({ filteredSkills, onEdit, onDelete }: SkillTableProps) => {
           </tbody>
         </table>
       </div>
-      <BaseModal
+      <DeleteConfirmationModal
         open={deleteModalOpen}
         handler={() => setDeleteModalOpen(false)}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#333333]">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-[#E0E0E0]">
-            Delete confirmation
-          </h3>
-          <button
-            type="button"
-            onClick={() => setDeleteModalOpen(false)}
-            className="p-1 hover:bg-gray-100/70 dark:hover:bg-[#3A3A3A]/70 rounded-full transition-colors text-gray-500 dark:text-[#AAAAAA] hover:text-[#01B399]"
-          >
-            <Xmark strokeWidth={2} className="h-5 w-5" />
-          </button>
-        </div>
-        <div className="p-4 border-b border-gray-200 dark:border-[#333333]">
-          <p className="text-gray-800 dark:text-[#E0E0E0]">
-            Are you sure you want to delete this skill? This action cannot be
-            undone.
-          </p>
-        </div>
-        <div className="flex justify-end gap-2 p-4">
-          <button
-            type="button"
-            onClick={() => setDeleteModalOpen(false)}
-            className="px-4 py-2 text-red-500 dark:text-red-400 hover:bg-red-100/50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={confirmDelete}
-            className="px-4 py-2 bg-[#01B399] text-white hover:bg-[#019d87] rounded-lg transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      </BaseModal>
+        onConfirm={confirmDelete}
+        title="Delete Skill"
+        message="Are you sure you want to delete this skill? This action cannot be undone."
+      />
     </>
   );
 };

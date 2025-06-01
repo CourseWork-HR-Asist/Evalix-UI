@@ -9,10 +9,11 @@ import SkillTable from "./SkillTable";
 import Loader from "../../../components/ui/loader/Loader";
 
 const SkillPage: React.FC = () => {
-  const { skills, loading, getSkills, addSkill, editSkill, removeSkill } = useSkillSlice();
+  const { skills, loading, getSkills, addSkill, editSkill, removeSkill } =
+    useSkillSlice();
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'create' | 'edit'>('create');
+  const [modalType, setModalType] = useState<"create" | "edit">("create");
   const [activeSkill, setActiveSkill] = useState<Skill | null>(null);
 
   useEffect(() => {
@@ -20,61 +21,58 @@ const SkillPage: React.FC = () => {
   }, []);
 
   const handleAddClick = () => {
-    setModalType('create');
+    setModalType("create");
     setActiveSkill(null);
     setModalOpen(true);
   };
 
   const handleEdit = (skill: Skill) => {
-    setModalType('edit');
+    setModalType("edit");
     setActiveSkill(skill);
     setModalOpen(true);
   };
 
   const handleSubmit = async (data: Skill) => {
-    if (modalType === 'create') {
-      await addSkill({ ...data, id: '' });
-    } else if (modalType === 'edit' && activeSkill) {
+    if (modalType === "create") {
+      await addSkill({ ...data, id: "" });
+    } else if (modalType === "edit" && activeSkill) {
       await editSkill({ ...activeSkill, ...data });
     }
     setModalOpen(false);
     setActiveSkill(null);
   };
   const onCloseHandler = () => {
-    setModalOpen(false)
+    setModalOpen(false);
   };
-  const filteredSkills = Array.isArray(skills) 
-    ? skills.filter((s: Skill) => s.title.toLowerCase().includes(search.toLowerCase()))
+  const filteredSkills = Array.isArray(skills)
+    ? skills.filter((s: Skill) =>
+        s.title.toLowerCase().includes(search.toLowerCase())
+      )
     : [];
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader loading={loading} />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen p-4">
+    <>
+      {loading && <Loader loading={loading} />}
+      <div className="min-h-screen p-4">
         <ContentCard className="bg-white dark:bg-[#424242]">
-            <SkillHeader onAddClick={handleAddClick} />
-            <SearchInput search={search} onSearchChange={setSearch} />
-            <SkillTable 
-              filteredSkills={filteredSkills} 
-              onEdit={handleEdit} 
-              onDelete={removeSkill} 
-            />
-            <SkillModal
-                open={modalOpen}
-                onClose={onCloseHandler}
-                modalType={modalType}
-                activeSkill={activeSkill}
-                onSubmit={handleSubmit}
-            />
+          <SkillHeader onAddClick={handleAddClick} />
+          <SearchInput search={search} onSearchChange={setSearch} />
+          <SkillTable
+            filteredSkills={filteredSkills}
+            onEdit={handleEdit}
+            onDelete={removeSkill}
+          />
+          <SkillModal
+            open={modalOpen}
+            onClose={onCloseHandler}
+            modalType={modalType}
+            activeSkill={activeSkill}
+            onSubmit={handleSubmit}
+          />
         </ContentCard>
-    </div>
+      </div>
+    </>
   );
 };
 
-export default SkillPage; 
+export default SkillPage;

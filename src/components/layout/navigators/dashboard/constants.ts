@@ -1,6 +1,6 @@
 export const NAV_ITEMS = [
-  { text: "Skill", href: "/skill" },
-  { text: "User", href: "/user" },
-  { text: "Projects", href: "#" },
   { text: "Dashboard", href: "/dashboard" },
+  { text: "Skills", href: "/skill" },
+  { text: "Resumes", href: "/resumes" },
+  { text: "Vacancy", href: "/vacancy" },
 ];

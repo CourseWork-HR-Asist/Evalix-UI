@@ -199,6 +199,52 @@ export class HttpClient {
   }
 
   /**
+   * Upload files with explicit query parameters
+   * @param url URL to upload to
+   * @param files File or files to upload
+   * @param queryParams Query parameters to add to the URL
+   * @param data Additional form data
+   * @param config Axios configuration
+   * @param options Request options including notification options
+   * @returns Promise with the response data
+   */
+  public async uploadFileWithQuery<T, D, Q = Record<string, string | number | boolean>>(
+    url: string,
+    files: File | File[],
+    queryParams: Q,
+    data?: Record<string, D>,
+    config?: AxiosRequestConfig,
+    options?: RequestOptions
+  ): Promise<T> {
+    const formData = new FormData();
+
+    if (Array.isArray(files)) {
+      files.forEach((file) => {
+        formData.append(`files`, file);
+      });
+    } else {
+      formData.append("resumeFile", files);
+    }
+
+    if (data) {
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
+    }
+
+    return this.request<T>({
+      method: "POST",
+      url,
+      params: queryParams,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...config,
+    }, options);
+  }
+
+  /**
    * Make a request with the given configuration
    * @param config Axios configuration
    * @param options Request options
