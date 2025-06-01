@@ -5,13 +5,13 @@ import {
     createResume,
     deleteResume,
 } from "../store/resume.slice";
-
+import { Resume } from "../service/type";
 
 export const useResumeSlice = () => {
     const dispatch = useAppDispatch();
-    const resumes = useAppSelector((state) => state.resumes.list);
-    const loading = useAppSelector((state) => state.resumes.loading);
-    const error = useAppSelector((state) => state.resumes.error);
+    const resumes = useAppSelector((state: { resumes: { list: Resume[] } }) => state.resumes.list);
+    const loading = useAppSelector((state: { resumes: { loading: boolean } }) => state.resumes.loading);
+    const error = useAppSelector((state: { resumes: { error: string | null } }) => state.resumes.error);
   
     const getResumes = () => dispatch(fetchResumes());
     const getResumeByUserId = (userId: string) => dispatch(fetchResumeByUserId(userId));

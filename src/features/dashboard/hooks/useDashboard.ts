@@ -37,23 +37,20 @@ export const useDashboard = (): UseDashboardResult => {
 
   useEffect(() => {
     if (resumes && vacancies) {
-      // Calculate unique skills across all vacancies
       const uniqueSkills = new Set<string>();
-      vacancies.forEach(vacancy => {
-        vacancy.skills.forEach(skill => {
+      vacancies.forEach((vacancy: Vacancy) => {
+        vacancy.skills.forEach((skill: { skillId: string }) => {
           uniqueSkills.add(skill.skillId);
         });
       });
-
-      // Calculate recent activity (items created in last 30 days)
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       
-      const recentResumes = resumes.filter(resume => 
+      const recentResumes = resumes.filter((resume: Resume) => 
         new Date(resume.createdAt) >= thirtyDaysAgo
       );
       
-      const recentVacancies = vacancies.filter(vacancy => 
+      const recentVacancies = vacancies.filter((vacancy: Vacancy) => 
         new Date(vacancy.createdAt) >= thirtyDaysAgo
       );
 

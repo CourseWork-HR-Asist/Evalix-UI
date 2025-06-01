@@ -7,13 +7,14 @@ import {
     deleteEvaluation,
 } from "../store/evaluation.slice";
 import { CreateEvaluation } from "../service/type";
+import { Evaluation } from "../service/type";
 
 export const useEvaluationSlice = () => {
   const dispatch = useAppDispatch();
 
-  const evaluations = useAppSelector((state) => state.evaluations.list);
-  const loading = useAppSelector((state) => state.evaluations.loading);
-  const error = useAppSelector((state) => state.evaluations.error);
+  const evaluations = useAppSelector((state: { evaluations: { list: Evaluation[] } }) => state.evaluations.list);
+  const loading = useAppSelector((state: { evaluations: { loading: boolean } }) => state.evaluations.loading);
+  const error = useAppSelector((state: { evaluations: { error: string | null } }) => state.evaluations.error);
 
   const getEvaluations = () => dispatch(fetchEvaluations());
   const getEvaluationsByVacancyId = (vacancyId: string) => dispatch(fetchEvaluationsByVacancyId(vacancyId));

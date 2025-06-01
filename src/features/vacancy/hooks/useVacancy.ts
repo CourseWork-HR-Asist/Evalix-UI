@@ -7,10 +7,10 @@ import { Vacancy, VacancySkillCreate, VacancySkillUpdate } from "../service/type
 export const useVacancySlice = () => {
   const dispatch = useAppDispatch();
 
-  const vacancies = useAppSelector((state) => state.vacancy.list);
-  const currentVacancy = useAppSelector((state) => state.vacancy.currentVacancy);
-  const loading = useAppSelector((state) => state.vacancy.loading);
-  const error = useAppSelector((state) => state.vacancy.error);
+  const vacancies = useAppSelector((state: { vacancy: { list: Vacancy[] } }) => state.vacancy.list);
+  const currentVacancy = useAppSelector((state: { vacancy: { currentVacancy: Vacancy | null } }) => state.vacancy.currentVacancy);
+  const loading = useAppSelector((state: { vacancy: { loading: boolean } }) => state.vacancy.loading);
+  const error = useAppSelector((state: { vacancy: { error: string | null } }) => state.vacancy.error);
 
   const getVacancies = () => dispatch(vacancyActions.fetchVacancies());
   const getVacancyById = (id: string) => dispatch(vacancyActions.fetchVacancyById(id));
