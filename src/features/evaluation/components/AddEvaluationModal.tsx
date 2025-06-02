@@ -224,7 +224,7 @@ const AddEvaluationModal = ({
                       : false,
                 }}
                 mapOption={(resume) => ({
-                  label: resume.fileName || "Unnamed Resume",
+                  label: resume.originalFileName || "Unnamed Resume",
                   value: resume.id,
                 })}
               />
@@ -234,7 +234,6 @@ const AddEvaluationModal = ({
                 Loading resumes...
               </p>
             )}
-            {/* Start Analysis button moved to footer */}
           </div>
         )}
       </DialogBody>

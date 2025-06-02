@@ -22,7 +22,9 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
   return (
     <div className="bg-white dark:bg-[#424242] rounded-xl shadow-md overflow-hidden p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Recent Resumes</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+          Recent Resumes
+        </h2>
         <Link
           to="/resumes"
           className="flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-sm font-medium"
@@ -50,7 +52,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-900 dark:text-white truncate">
-                    {resume.fileName}
+                    {resume.originalFileName}
                   </h3>
 
                   <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1">

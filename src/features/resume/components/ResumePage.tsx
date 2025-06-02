@@ -50,7 +50,7 @@ const ResumeCard = ({
         <div className="flex flex-col">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
-              {resume.fileName}
+              {resume.originalFileName}
             </h3>
             <div className="flex items-center text-gray-400 dark:text-gray-500 mb-1">
               <CalendarIcon className="h-4 w-4 mr-1" />
@@ -76,7 +76,7 @@ const ResumeCard = ({
               </span>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 ml-7">
-              {resume.fileName}
+              {resume.originalFileName}
             </p>
           </div>
 
@@ -158,10 +158,7 @@ const ResumeList = () => {
                 Browse all uploaded resumes
               </p>
             </div>
-            <ActionButton
-              onClick={handleUploadModalOpen}
-              customClassName="py-1.5 px-3 text-sm"
-            >
+            <ActionButton onClick={handleUploadModalOpen}>
               <PlusIcon className="h-4 w-4 md:h-4 md:w-4" />
               <span>Upload Resume</span>
             </ActionButton>

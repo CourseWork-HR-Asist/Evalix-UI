@@ -342,7 +342,7 @@ function EvaluationsTable({
                           color="blue-gray"
                           className="font-normal dark:text-gray-300"
                         >
-                          {evaluation.resume?.fileName || "Unknown"}
+                          {evaluation.resume?.originalFileName || "Unknown"}
                         </Typography>
                         {evaluation.resume?.url && (
                           <Tooltip content="Download Resume">

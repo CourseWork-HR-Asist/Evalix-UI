@@ -46,11 +46,17 @@ function NavLinks() {
   );
 }
 
-function MobileMenuToggle({ openNav, setOpenNav }: { openNav: boolean; setOpenNav: (val: boolean) => void }) {
+function MobileMenuToggle({
+  openNav,
+  setOpenNav,
+}: {
+  openNav: boolean;
+  setOpenNav: (val: boolean) => void;
+}) {
   return (
     <IconButton
       type="button"
-      className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+      className="lg:hidden text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white bg-transparent"
       onClick={() => setOpenNav(!openNav)}
       placeholder={undefined}
       onResize={undefined}
@@ -66,7 +72,6 @@ function MobileMenuToggle({ openNav, setOpenNav }: { openNav: boolean; setOpenNa
     </IconButton>
   );
 }
-
 
 export function NavbarWithSolidBackground() {
   const [openNav, setOpenNav] = useState(false);

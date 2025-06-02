@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ComponentProps } from "react";
 import { Navbar, Button } from "@material-tailwind/react";
 import { useUserSlice } from "../../../features/authorization/hooks/useUser";
 import { useAppDispatch } from "../../../hooks/useReduxHooks";
@@ -12,6 +12,7 @@ import { MobileMenu } from "./dashboard/MobileMenu";
 import { NAV_ITEMS } from "./dashboard/constants";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { materialProps } from "../../ui/helpers/materialTailwind";
 export default function DashBoardNavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUserSlice();
@@ -75,11 +76,7 @@ export default function DashBoardNavBar() {
                     variant="text"
                     className="flex items-center gap-2 p-2 text-gray-900 hover:text-red-500 dark:text-white dark:hover:text-red-400 transition-colors"
                     onClick={handleLogout}
-                    placeholder=""
-                    onResize={undefined}
-                    onResizeCapture={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
+                    {...materialProps<ComponentProps<typeof Button>>()}
                   >
                     <ArrowRightOnRectangleIcon className="h-5 w-5" />
                     <span className="hidden lg:inline">Logout</span>
@@ -101,6 +98,7 @@ export default function DashBoardNavBar() {
                 firstName: user.firstName,
                 role: { title: user.role?.title || "" },
               }}
+              onLogout={handleLogout}
             />
           )}
         </Navbar>
