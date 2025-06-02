@@ -43,4 +43,5 @@ export interface MobileMenuProps {
   user?: User;
   className?: string;
   children?: React.ReactNode;
+  onLogout?: () => void;
 }

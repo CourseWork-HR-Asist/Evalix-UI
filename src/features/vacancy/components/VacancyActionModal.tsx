@@ -73,9 +73,13 @@ export function VacancyActionModal({
   }, [open, activeVacancy, reset]);
 
   return (
-    <BaseModal open={open} handler={handler}>
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#333333]">
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-[#E0E0E0]">
+    <BaseModal 
+      open={open} 
+      handler={handler}
+      className="m-0 sm:m-4 w-full max-w-2xl max-h-[90vh] sm:max-h-[90vh] flex flex-col"
+    >
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#333333] flex-shrink-0">
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-[#E0E0E0]">
           {modalType === "create" ? "Create vacancy" : "Edit vacancy"}
         </h3>
         <button
@@ -88,7 +92,7 @@ export function VacancyActionModal({
         </button>
       </div>
       <DialogBody
-        className="max-h-[42rem] overflow-y-auto dark:bg-[#2A2A2A]"
+        className="flex-1 overflow-y-auto dark:bg-[#2A2A2A] p-4 sm:p-6"
         divider={false}
         {...materialProps<ComponentProps<typeof DialogBody>>()}
       >
@@ -167,7 +171,7 @@ export function VacancyActionModal({
           </form>
         </div>
       </DialogBody>
-      <div className="flex justify-end gap-2 p-4">
+      <div className="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-[#333333] flex-shrink-0">
         <button
           type="button"
           onClick={handler}
@@ -179,7 +183,7 @@ export function VacancyActionModal({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-[#01B399] text-white hover:bg-[#019d87] rounded-lg transition-colors disabled:opacity-50 dark:disabled:opacity-40"
+          className="px-4 py-2 bg-[#01B399] text-white hover:bg-[#019d87] rounded-lg transition-colors disabled:opacity-50 dark:disabled:opacity-40 flex-1 sm:flex-none"
           onClick={handleSubmit(onSubmit)}
         >
           {isSubmitting
