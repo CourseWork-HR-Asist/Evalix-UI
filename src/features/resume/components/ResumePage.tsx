@@ -49,7 +49,7 @@ const ResumeCard = ({
       <div className="p-6">
         <div className="flex flex-col">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 truncate" title={resume.originalFileName}>
               {resume.originalFileName}
             </h3>
             <div className="flex items-center text-gray-400 dark:text-gray-500 mb-1">
@@ -62,7 +62,7 @@ const ResumeCard = ({
             </div>
             <div className="flex items-center text-gray-400 dark:text-gray-500 mb-1">
               <UserIcon className="h-4 w-4 mr-1" />
-              <span className="text-sm">
+              <span className="text-sm truncate max-w-[200px] sm:max-w-none" title={resume.user?.email}>
                 {resume.user?.email || "Unknown user"}
               </span>
             </div>
@@ -75,15 +75,15 @@ const ResumeCard = ({
                 Resume File
               </span>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 ml-7">
+            <p className="text-sm text-gray-600 dark:text-gray-400 ml-7 truncate" title={resume.originalFileName}>
               {resume.originalFileName}
             </p>
           </div>
 
-          <div className="flex justify-end mt-4 space-x-2">
+          <div className="flex flex-wrap justify-end gap-2 mt-4">
             <button
               onClick={() => handleDownload(resume.url)}
-              className="flex items-center px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
+              className="flex items-center px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors flex-shrink-0"
               title="Download"
             >
               <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
@@ -92,7 +92,7 @@ const ResumeCard = ({
             {isAutor && (
               <button
                 onClick={handleDeleteClick}
-                className="flex items-center px-3 py-1 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
+                className="flex items-center px-3 py-1 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors flex-shrink-0"
                 title="Delete"
               >
                 <TrashIcon className="h-4 w-4 mr-1" />

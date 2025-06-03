@@ -22,27 +22,45 @@ function Logo() {
 }
 
 function NavLinks() {
-  const links = [
-    { text: "Home", url: "/" },
-    { text: "About us", url: "/about" },
-  ];
-
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {links.map((item) => (
-        <Typography
-          key={item.text}
-          as="li"
-          type="small"
-          className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
-        >
-          <a href={item.url} className="flex items-center">
-            {item.text}
-          </a>
-        </Typography>
-      ))}
-      <ThemeToggleButton />
+      <Typography
+        as="li"
+        type="small"
+        className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+      >
+        <a href="/" className="flex items-center">
+          Home
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        type="small"
+        className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+      >
+        <a href="/about" className="flex items-center">
+          About us
+        </a>
+      </Typography>
     </ul>
+  );
+}
+
+function RightSection() {
+  return (
+    <div className="flex items-center gap-4">
+      <Typography
+        as="a"
+        href="/auth"
+        type="small"
+        className="p-1 font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors hidden lg:block"
+      >
+        Login
+      </Typography>
+      <div className="hidden lg:block">
+        <ThemeToggleButton />
+      </div>
+    </div>
   );
 }
 
@@ -114,13 +132,29 @@ export function NavbarWithSolidBackground() {
       >
         <div className="flex items-center justify-between">
           <Logo />
-          <div className="mr-4 hidden lg:block">
+          
+          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2">
             <NavLinks />
           </div>
-          <MobileMenuToggle openNav={openNav} setOpenNav={setOpenNav} />
+          
+          <div className="flex items-center gap-4">
+            <RightSection />
+            <MobileMenuToggle openNav={openNav} setOpenNav={setOpenNav} />
+          </div>
         </div>
         <Collapse open={openNav}>
-          <NavLinks />
+          <div className="flex flex-col gap-4 lg:hidden">
+            <NavLinks />
+            <div className="flex items-center justify-between p-2">
+              <a 
+                href="/auth" 
+                className="font-normal text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+              >
+                Login
+              </a>
+              <ThemeToggleButton />
+            </div>
+          </div>
         </Collapse>
       </Navbar>
     </div>

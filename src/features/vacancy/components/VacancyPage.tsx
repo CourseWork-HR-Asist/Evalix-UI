@@ -97,13 +97,16 @@ const VacancyPage = () => {
               </div>
             </ContentCard>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full">
               {vacancies.map((vacancy: Vacancy) => (
-                <VacancyCard
-                  key={vacancy.id}
-                  vacancy={vacancy}
-                  onClick={() => handleDetailModal(vacancy)}
-                />
+                <div key={vacancy.id} className="w-full h-full">
+                  <div className="h-full">
+                    <VacancyCard
+                      vacancy={vacancy}
+                      onClick={() => handleDetailModal(vacancy)}
+                    />
+                  </div>
+                </div>
               ))}
             </div>
           )}
