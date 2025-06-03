@@ -20,12 +20,12 @@ const VacancyCard = ({
 }: VacancyCardProps) => {
   return (
     <div
-      className={`bg-white dark:bg-[#2A2A2A] rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer ${className}`}
+      className={`h-full flex flex-col bg-white dark:bg-[#2A2A2A] rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer ${className}`}
       onClick={onClick}
     >
-      <div className="p-4 sm:p-6">
+      <div className="flex-1 p-4 sm:p-6 flex flex-col">
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-          <div className="sm:col-span-2 flex flex-col justify-between">
+          <div className="sm:col-span-2 flex flex-col justify-between h-full">
             <div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                 {vacancy.title}
@@ -74,7 +74,7 @@ const VacancyCard = ({
               )}
           </div>
 
-          <div className="sm:col-span-3 mt-4 sm:mt-0">
+          <div className="sm:col-span-3 mt-4 sm:mt-0 flex-1">
             <div className="mb-3">
               <div className="flex items-start mb-1">
                 <AcademicCapIcon className="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
