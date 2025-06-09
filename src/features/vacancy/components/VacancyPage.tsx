@@ -68,7 +68,7 @@ const VacancyPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto p-1">
       {loading ? (
         <div className="flex justify-center items-center min-h-[400px]">
           <Loader loading={loading} />

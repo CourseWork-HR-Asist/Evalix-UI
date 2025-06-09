@@ -16,6 +16,7 @@ export const useResumeSlice = () => {
     const getResumes = () => dispatch(fetchResumes());
     const getResumeByUserId = (userId: string) => dispatch(fetchResumeByUserId(userId));
     const removeResume = (id: string) => dispatch(deleteResume(id));
+    const getResumesByUserId = (userId: string) => resumes.filter((resume: Resume) => resume.userId === userId); 
   
     const uploadResume = async (
       file: File,
@@ -43,6 +44,7 @@ export const useResumeSlice = () => {
       getResumes,
       getResumeByUserId,
       removeResume,
+      getResumesByUserId,
       uploadResume,
     };
   };

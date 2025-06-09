@@ -56,6 +56,13 @@ const deleteVacancy = createAsyncThunk<string, string>(
       return id;
     }
 );
+const getVacancyByUserId = createAsyncThunk<Vacancy[], string>(
+    VacancySlice.getByUserId,
+    async (id, { signal }) => {
+      const service = createVacancyService(signal);
+      return await service.getVacancyByUserId(id);
+    }
+);  
 
 const updateVacancySkill = createAsyncThunk<VacancySkill, VacancySkillUpdate>(
     VacancySlice.updateSkill,
@@ -109,8 +116,7 @@ const vacancySlice = createSlice({
         builder.addCase(fetchVacancyById.fulfilled, (state, action) => {
             state.loading = false;
             state.currentVacancy = action.payload;
-            
-            // Also update in list if present
+    
             const index = state.list.findIndex(item => item.id === action.payload.id);
             if (index !== -1) {
                 state.list[index] = action.payload;
@@ -173,14 +179,11 @@ const vacancySlice = createSlice({
         })
         builder.addCase(updateVacancySkill.fulfilled, (state, action) => {
             state.loading = false;
-            
-            // Update in the list
             const index = state.list.findIndex(item => item.skills && item.skills.some(skill => skill.id === action.payload.id));
             if (index !== -1) {
                 state.list[index].skills = state.list[index].skills.map(skill => skill.id === action.payload.id ? action.payload : skill);
             }
             
-            // Also update in currentVacancy if it's the same vacancy
             if (state.currentVacancy && state.currentVacancy.skills && 
                 state.currentVacancy.skills.some(skill => skill.id === action.payload.id)) {
                 state.currentVacancy.skills = state.currentVacancy.skills.map(
@@ -242,6 +245,19 @@ const vacancySlice = createSlice({
             state.loading = false;
             state.error = action.error.message || 'Failed to add vacancy skill';
         })
+        builder.addCase(getVacancyByUserId.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        builder.addCase(getVacancyByUserId.fulfilled, (state, action) => {
+            state.loading = false;
+            state.list = action.payload;
+            state.error = null;
+        })
+        builder.addCase(getVacancyByUserId.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || 'Failed to fetch vacancies';
+        })
     }
 })
 
@@ -255,6 +271,7 @@ export const vacancyActions = {
     deleteVacancy,
     updateVacancySkill,
     deleteVacancySkill,
-    addVacancySkill
+    addVacancySkill,
+    getVacancyByUserId
 };
 

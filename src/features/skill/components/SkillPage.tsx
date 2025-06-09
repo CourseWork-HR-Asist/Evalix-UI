@@ -53,7 +53,7 @@ const SkillPage: React.FC = () => {
   return (
     <>
       {loading && <Loader loading={loading} />}
-      <div className="min-h-screen p-4">
+      <div className="min-h-screen">
         <ContentCard className="bg-white dark:bg-[#424242]">
           <SkillHeader onAddClick={handleAddClick} />
           <SearchInput search={search} onSearchChange={setSearch} />

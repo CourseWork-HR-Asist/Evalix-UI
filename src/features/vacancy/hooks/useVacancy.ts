@@ -20,6 +20,7 @@ export const useVacancySlice = () => {
   const updateVacancySkill = (data: VacancySkillUpdate) => dispatch(vacancyActions.updateVacancySkill(data));
   const removeVacancySkill = (id: string) => dispatch(vacancyActions.deleteVacancySkill(id));
   const addVacancySkill = (data: VacancySkillCreate) => dispatch(vacancyActions.addVacancySkill(data));
+  const getVacancyByUserId = (id: string) => dispatch(vacancyActions.getVacancyByUserId(id));
 
   return {
     vacancies,
@@ -34,5 +35,6 @@ export const useVacancySlice = () => {
     updateVacancySkill,
     removeVacancySkill,
     addVacancySkill,
+    getVacancyByUserId,
   };
 };

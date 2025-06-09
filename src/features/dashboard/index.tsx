@@ -23,10 +23,14 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 dark:bg-[#333] min-h-screen">
+    <div className="container mx-auto p-2  min-h-screen">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-300">Welcome to Evalix HR Assistant</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+          Dashboard
+        </h1>
+        <p className="text-gray-600 dark:text-gray-300">
+          Welcome to Evalix HR Assistant
+        </p>
       </div>
 
       {error && (
@@ -92,12 +96,9 @@ const Dashboard: React.FC = () => {
         />
       </div>
 
-      {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Resumes Section */}
         <ResumePreview resumes={resumes} limit={4} />
 
-        {/* Vacancies Section */}
         <VacancyPreview vacancies={vacancies} limit={4} />
       </div>
     </div>

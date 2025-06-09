@@ -46,5 +46,6 @@ export enum VacancySlice {
  delete = "vacancies/delete",    
  updateSkill = "vacancies/skill/update",
  deleteSkill = "vacancies/skill/delete",
- addSkill = "vacancies/skill/add"
+ addSkill = "vacancies/skill/add",
+ getByUserId = "vacancies/get-by-user-id"
 }
