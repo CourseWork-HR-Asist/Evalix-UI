@@ -23,6 +23,10 @@ interface UploadResumeModalProps {
   onSuccess?: () => void;
 }
 
+interface IUploadResumeForm {
+  resumeFile: FileList | null;
+}
+
 const UploadResumeModal = ({
   open,
   handler,
@@ -35,7 +39,7 @@ const UploadResumeModal = ({
   const { uploadResume } = useResumeSlice();
   const { user } = useUserSlice();
 
-  const { control, reset, watch } = useForm({
+  const { control, reset, watch } = useForm<IUploadResumeForm>({
     defaultValues: {
       resumeFile: null,
     },
@@ -44,7 +48,8 @@ const UploadResumeModal = ({
   const resumeFile = watch("resumeFile");
 
   useEffect(() => {
-    if (resumeFile && resumeFile.type !== "application/pdf") {
+    const file = resumeFile?.[0];
+    if (file && file.type !== "application/pdf") {
       setFileError("Please upload a PDF file only.");
     } else {
       setFileError(null);
@@ -52,11 +57,12 @@ const UploadResumeModal = ({
   }, [resumeFile]);
 
   const handleUploadResume = async () => {
-    if (!resumeFile || !user?.id || fileError) return;
+    const file = resumeFile?.[0];
+    if (!file || !user?.id || fileError) return;
 
     try {
       setIsUploading(true);
-      await uploadResume(resumeFile, user.id, (resumeId) => {
+      await uploadResume(file, user.id, (resumeId) => {
         setUploadedResumeId(resumeId);
         reset({ resumeFile: null });
         onSuccess?.();
@@ -116,7 +122,7 @@ const UploadResumeModal = ({
                 variant="filled"
                 size="lg"
                 className="mt-4 px-6 py-3"
-                disabled={!resumeFile || isUploading || !!fileError}
+                disabled={!resumeFile?.length || isUploading || !!fileError}
                 {...materialProps<ComponentProps<typeof Button>>()}
               >
                 {isUploading ? "Uploading..." : "Upload Resume"}
