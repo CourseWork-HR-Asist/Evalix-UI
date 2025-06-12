@@ -21,6 +21,11 @@ import { useUserSlice } from "../../authorization/hooks/useUser";
 import BaseModal from "../../../components/ui/modals/BaseModal";
 import { materialProps } from "../../../components/ui/helpers/materialTailwind";
 
+interface FormData {
+  resumeId: string;
+  resumeFile: File | null;
+}
+
 interface AddEvaluationModalProps {
   open: boolean;
   handler: () => void;
@@ -46,7 +51,7 @@ const AddEvaluationModal = ({
   const { addEvaluation } = useEvaluationSlice();
   const { user } = useUserSlice();
 
-  const { control, handleSubmit, reset, watch } = useForm({
+  const { control, handleSubmit, reset, watch } = useForm<FormData>({
     defaultValues: {
       resumeId: "",
       resumeFile: null,
@@ -71,7 +76,7 @@ const AddEvaluationModal = ({
   }, [open, reset]);
 
   useEffect(() => {
-    if (resumeFile && resumeFile.type !== "application/pdf") {
+    if (resumeFile && resumeFile?.type !== "application/pdf") {
       setFileError("Please upload a PDF file only.");
     } else {
       setFileError(null);
