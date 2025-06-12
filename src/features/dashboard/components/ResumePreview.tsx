@@ -13,8 +13,11 @@ interface ResumePreviewProps {
   limit?: number;
 }
 
-const ResumePreview: React.FC<ResumePreviewProps> = ({ resumes }) => {
-  console.log("[ResumePreview] Props - resumes:", resumes);
+const ResumePreview: React.FC<ResumePreviewProps> = ({
+  resumes,
+  limit = 4,
+}) => {
+  const limitedResumes = resumes.slice(0, limit);
 
   return (
     <div className="bg-white dark:bg-[#424242] rounded-xl shadow-md overflow-hidden p-6">
@@ -31,14 +34,14 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ resumes }) => {
         </Link>
       </div>
 
-      {resumes.length === 0 ? (
+      {limitedResumes.length === 0 ? (
         <div className="text-center py-6 text-gray-500 dark:text-gray-400">
           <DocumentIcon className="h-12 w-12 mx-auto text-gray-400 dark:text-gray-500" />
           <p className="mt-2">No resumes found</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {resumes.map((resume) => (
+          {limitedResumes.map((resume) => (
             <div
               key={resume.id}
               className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors cursor-pointer"

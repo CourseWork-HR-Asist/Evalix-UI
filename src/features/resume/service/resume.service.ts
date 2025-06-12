@@ -16,8 +16,8 @@ export class ResumeService {
     });
   }
 
-  public getByUserId(id: string): Promise<Resume> {
-    return this.httpClient.get<Resume>(`/resumes/v1/resume/get-by-user-id/${id}`, undefined, {
+  public getByUserId(id: string): Promise<Resume[]> {
+    return this.httpClient.get<Resume[]>(`/resumes/v1/resume/get-by-user-id/${id}`, undefined, {
       showSuccessToast: false,
       errorMessage: "Error fetching user resume"
     });

@@ -21,9 +21,10 @@ interface UseDashboardResult {
 }
 
 export const useDashboard = (): UseDashboardResult => {
-  const { resumes, loading: resumesLoading, error: resumesError, getResumesByUserId } = useResumeSlice();
-  const { vacancies, loading: vacanciesLoading, error: vacanciesError, getVacancyByUserId } = useVacancySlice();
   const { user } = useUserSlice();
+  const { resumes, loading: resumesLoading, error: resumesError, getResumeByUserId } = useResumeSlice();
+  const { vacancies, loading: vacanciesLoading, error: vacanciesError, getVacancyByUserId } = useVacancySlice();
+
   const [stats, setStats] = useState<DashboardStats>({
     totalResumes: 0,
     totalVacancies: 0,
@@ -34,9 +35,9 @@ export const useDashboard = (): UseDashboardResult => {
   useEffect(() => {
     if (user && user.id) {
       getVacancyByUserId(user.id);
-      getResumesByUserId(user.id);
+      getResumeByUserId(user.id);
     }
-  }, [user]);
+  }, [user, getResumeByUserId, getVacancyByUserId]);
 
   useEffect(() => {
     if (resumes && vacancies) {
