@@ -49,7 +49,10 @@ const ResumeCard = ({
       <div className="p-6">
         <div className="flex flex-col">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 truncate" title={resume.originalFileName}>
+            <h3
+              className="text-xl font-bold text-gray-800 dark:text-white mb-2 truncate"
+              title={resume.originalFileName}
+            >
               {resume.originalFileName}
             </h3>
             <div className="flex items-center text-gray-400 dark:text-gray-500 mb-1">
@@ -62,7 +65,10 @@ const ResumeCard = ({
             </div>
             <div className="flex items-center text-gray-400 dark:text-gray-500 mb-1">
               <UserIcon className="h-4 w-4 mr-1" />
-              <span className="text-sm truncate max-w-[200px] sm:max-w-none" title={resume.user?.email}>
+              <span
+                className="text-sm truncate max-w-[200px] sm:max-w-none"
+                title={resume.user?.email}
+              >
                 {resume.user?.email || "Unknown user"}
               </span>
             </div>
@@ -75,7 +81,10 @@ const ResumeCard = ({
                 Resume File
               </span>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 ml-7 truncate" title={resume.originalFileName}>
+            <p
+              className="text-sm text-gray-600 dark:text-gray-400 ml-7 truncate"
+              title={resume.originalFileName}
+            >
               {resume.originalFileName}
             </p>
           </div>
@@ -142,7 +151,7 @@ const ResumeList = () => {
   };
 
   return (
-    <ContentCard>
+    <ContentCard className="p-2">
       {loading ? (
         <div className="flex justify-center items-center min-h-[400px]">
           <Loader loading={loading} />

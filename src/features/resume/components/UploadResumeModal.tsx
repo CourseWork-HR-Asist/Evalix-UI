@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { ComponentProps } from "react";
 import {
@@ -23,6 +23,10 @@ interface UploadResumeModalProps {
   onSuccess?: () => void;
 }
 
+interface IUploadResumeForm {
+  resumeFile: FileList | null;
+}
+
 const UploadResumeModal = ({
   open,
   handler,
@@ -30,11 +34,12 @@ const UploadResumeModal = ({
 }: UploadResumeModalProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedResumeId, setUploadedResumeId] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const { uploadResume } = useResumeSlice();
   const { user } = useUserSlice();
 
-  const { control, reset, watch } = useForm({
+  const { control, reset, watch } = useForm<IUploadResumeForm>({
     defaultValues: {
       resumeFile: null,
     },
@@ -42,12 +47,22 @@ const UploadResumeModal = ({
 
   const resumeFile = watch("resumeFile");
 
+  useEffect(() => {
+    const file = resumeFile?.[0];
+    if (file && file.type !== "application/pdf") {
+      setFileError("Please upload a PDF file only.");
+    } else {
+      setFileError(null);
+    }
+  }, [resumeFile]);
+
   const handleUploadResume = async () => {
-    if (!resumeFile || !user?.id) return;
+    const file = resumeFile?.[0];
+    if (!file || !user?.id || fileError) return;
 
     try {
       setIsUploading(true);
-      await uploadResume(resumeFile, user.id, (resumeId) => {
+      await uploadResume(file, user.id, (resumeId) => {
         setUploadedResumeId(resumeId);
         reset({ resumeFile: null });
         onSuccess?.();
@@ -62,6 +77,7 @@ const UploadResumeModal = ({
   const handleClose = () => {
     reset({ resumeFile: null });
     setUploadedResumeId(null);
+    setFileError(null);
     handler();
   };
 
@@ -73,21 +89,32 @@ const UploadResumeModal = ({
       className="bg-white dark:bg-[#424242] shadow-xl"
       preventOutsideClose={false}
     >
-      <DialogHeader className="text-center justify-center text-xl font-bold text-gray-800 dark:text-white" {...materialProps<ComponentProps<typeof DialogHeader>>()}>
+      <DialogHeader
+        className="text-center justify-center text-xl font-bold text-gray-800 dark:text-white"
+        {...materialProps<ComponentProps<typeof DialogHeader>>()}
+      >
         Upload Resume
       </DialogHeader>
-      <DialogBody className="px-6 overflow-y-auto" {...materialProps<ComponentProps<typeof DialogBody>>()}>
+      <DialogBody
+        className="px-6 overflow-y-auto"
+        {...materialProps<ComponentProps<typeof DialogBody>>()}
+      >
         {!uploadedResumeId ? (
           <>
             <FileInput
               name="resumeFile"
               label="Upload Resume"
               control={control}
-              accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              placeholder="Choose a PDF or DOCX file or drag and drop here"
+              accept="application/pdf"
+              placeholder="Choose a PDF file or drag and drop here"
               rules={{ required: "Please select a resume file" }}
               maxSize={10 * 1024 * 1024} // 10MB
             />
+            {fileError && (
+              <Typography color="red" className="mt-2 text-sm font-medium">
+                {fileError}
+              </Typography>
+            )}
             <div className="flex justify-end">
               <Button
                 onClick={handleUploadResume}
@@ -95,7 +122,7 @@ const UploadResumeModal = ({
                 variant="filled"
                 size="lg"
                 className="mt-4 px-6 py-3"
-                disabled={!resumeFile || isUploading}
+                disabled={!resumeFile?.length || isUploading || !!fileError}
                 {...materialProps<ComponentProps<typeof Button>>()}
               >
                 {isUploading ? "Uploading..." : "Upload Resume"}
@@ -103,11 +130,18 @@ const UploadResumeModal = ({
             </div>
           </>
         ) : (
-          <Card className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800" {...materialProps<ComponentProps<typeof Card>>()}>
+          <Card
+            className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
+            {...materialProps<ComponentProps<typeof Card>>()}
+          >
             <CardBody {...materialProps<ComponentProps<typeof CardBody>>()}>
               <div className="flex items-center mb-4">
                 <DocumentTextIcon className="h-6 w-6 text-green-600 mr-2" />
-                <Typography variant="h6" color="green" {...materialProps<ComponentProps<typeof Typography>>()}>
+                <Typography
+                  variant="h6"
+                  color="green"
+                  {...materialProps<ComponentProps<typeof Typography>>()}
+                >
                   Resume uploaded successfully
                 </Typography>
               </div>

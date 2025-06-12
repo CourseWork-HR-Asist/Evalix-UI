@@ -609,15 +609,16 @@ export function VacancyDetailModal({
     <>
       {skillModalOpen && (
         <VacancySkillModal
-          open={true} /* Using true directly instead of skillModalOpen */
+          open={skillModalOpen}
           onClose={handleSkillModalClose}
           initialSkill={
-            !isAddingSkill && vacancy.skills && editingSkillIndex !== null
+            !isAddingSkill && activeVacancy.skills && editingSkillIndex !== null
               ? {
-                  id: vacancy.skills[editingSkillIndex].id,
-                  title: vacancy.skills[editingSkillIndex].title,
-                  level: vacancy.skills[editingSkillIndex].level || 1,
-                  experience: vacancy.skills[editingSkillIndex].experience || 0,
+                  id: activeVacancy.skills[editingSkillIndex].id,
+                  title: activeVacancy.skills[editingSkillIndex].title,
+                  level: activeVacancy.skills[editingSkillIndex].level || 1,
+                  experience:
+                    activeVacancy.skills[editingSkillIndex].experience || 0,
                 }
               : undefined
           }
@@ -625,11 +626,11 @@ export function VacancyDetailModal({
         />
       )}
       <BaseModal
+        size={"xl"}
         open={open}
         handler={handler}
-        preventOutsideClose={true}
-        size={"xl"}
-        className="w-[90vw]"
+        className="bg-white dark:bg-[#2A2A2A] shadow-xl"
+        preventOutsideClose={false}
       >
         <DialogHeader
           className="flex justify-between items-center"
@@ -668,19 +669,17 @@ export function VacancyDetailModal({
           {...materialProps<ComponentProps<typeof DialogBody>>()}
         >
           <div className="space-y-6">
-            {/* Title and date */}
             <VacancyHeader
-              title={vacancy.title}
+              title={activeVacancy.title}
               createdAt={
-                vacancy.createdAt
-                  ? new Date(vacancy.createdAt).toISOString()
+                activeVacancy.createdAt
+                  ? new Date(activeVacancy.createdAt).toISOString()
                   : undefined
               }
             />
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <VacancyInfo vacancy={vacancy} />
+                <VacancyInfo vacancy={activeVacancy} />
                 <VacancySkills
                   skills={activeVacancy.skills || []}
                   onEditSkill={handleEditSkill}
@@ -692,10 +691,8 @@ export function VacancyDetailModal({
                   isAuthor={isAuthor}
                 />
               </div>
-
-              <VacancyDescription description={vacancy.description} />
+              <VacancyDescription description={activeVacancy.description} />
             </div>
-
             <div className="mt-8">
               <h3 className="font-medium text-gray-700 dark:text-gray-200 mb-4">
                 Evaluations
@@ -705,7 +702,6 @@ export function VacancyDetailModal({
                   Add evaluation
                 </ActionButton>
               </div>
-              {/* Evaluations table */}
               <EvaluationsTable
                 evaluations={evaluations}
                 onEvaluationClick={handleEvaluationClick}

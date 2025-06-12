@@ -22,7 +22,7 @@ const fetchResumes = createAsyncThunk<Resume[]>(
   }
 );
 
-const fetchResumeByUserId = createAsyncThunk<Resume, string>(
+const fetchResumeByUserId = createAsyncThunk<Resume[], string>(
   "resumes/fetchByUserId",
   async (userId, { signal }) => {
     const resumeService = createResumeService(signal);
@@ -69,12 +69,7 @@ const resumeSlice = createSlice({
       })
       .addCase(fetchResumeByUserId.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.list.findIndex((r) => r.id === action.payload.id);
-        if (index !== -1) {
-          state.list[index] = action.payload;
-        } else {
-          state.list.push(action.payload);
-        }
+        state.list = action.payload;
       })
       .addCase(fetchResumeByUserId.rejected, (state, action) => {
         state.loading = false;

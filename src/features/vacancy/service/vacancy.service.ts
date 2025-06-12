@@ -62,6 +62,12 @@ export class VacancyService {
             errorMessage: "Error"
         });
     }
+    public getVacancyByUserId(id: string): Promise<Vacancy[]> {
+        return this.httpClient.get<Vacancy[]>(`/vacancies/v1/vacancy/get-by-user-id/${id}`, undefined, {
+            showSuccessToast: false,
+            errorMessage: "Error"
+        });
+    }
 
 }
 

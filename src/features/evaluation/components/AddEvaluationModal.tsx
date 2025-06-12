@@ -40,6 +40,7 @@ const AddEvaluationModal = ({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedResumeId, setUploadedResumeId] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const { loading, uploadResume } = useResumeSlice();
   const { addEvaluation } = useEvaluationSlice();
@@ -65,11 +66,20 @@ const AddEvaluationModal = ({
       setUploadedResumeId(null);
       setIsAnalyzing(false);
       setResumeSource("upload");
+      setFileError(null);
     }
   }, [open, reset]);
 
+  useEffect(() => {
+    if (resumeFile && resumeFile.type !== "application/pdf") {
+      setFileError("Please upload a PDF file only.");
+    } else {
+      setFileError(null);
+    }
+  }, [resumeFile]);
+
   const handleUploadResume = async () => {
-    if (!resumeFile || !user?.id) return;
+    if (!resumeFile || !user?.id || fileError) return;
 
     try {
       setIsUploading(true);
@@ -174,7 +184,6 @@ const AddEvaluationModal = ({
                   name="resumeFile"
                   label="Upload Resume"
                   control={control}
-                  accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                   placeholder="Choose a PDF or DOCX file or drag and drop here"
                   rules={{
                     required:
@@ -183,7 +192,13 @@ const AddEvaluationModal = ({
                         : false,
                   }}
                   maxSize={10 * 1024 * 1024} // 10MB
+                  accept="application/pdf"
                 />
+                {fileError && (
+                  <Typography color="red" className="mt-2 text-sm font-medium">
+                    {fileError}
+                  </Typography>
+                )}
               </>
             ) : (
               <Card

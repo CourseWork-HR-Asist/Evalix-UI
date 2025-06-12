@@ -15,7 +15,7 @@ interface ResumePreviewProps {
 
 const ResumePreview: React.FC<ResumePreviewProps> = ({
   resumes,
-  limit = 3,
+  limit = 4,
 }) => {
   const limitedResumes = resumes.slice(0, limit);
 

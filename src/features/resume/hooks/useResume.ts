@@ -6,6 +6,7 @@ import {
     deleteResume,
 } from "../store/resume.slice";
 import { Resume } from "../service/type";
+import { useCallback } from "react";
 
 export const useResumeSlice = () => {
     const dispatch = useAppDispatch();
@@ -13,11 +14,12 @@ export const useResumeSlice = () => {
     const loading = useAppSelector((state: { resumes: { loading: boolean } }) => state.resumes.loading);
     const error = useAppSelector((state: { resumes: { error: string | null } }) => state.resumes.error);
   
-    const getResumes = () => dispatch(fetchResumes());
-    const getResumeByUserId = (userId: string) => dispatch(fetchResumeByUserId(userId));
-    const removeResume = (id: string) => dispatch(deleteResume(id));
+    const getResumes = useCallback(() => dispatch(fetchResumes()), [dispatch]);
+    const getResumeByUserId = useCallback((userId: string) => dispatch(fetchResumeByUserId(userId)), [dispatch]);
+    const removeResume = useCallback((id: string) => dispatch(deleteResume(id)), [dispatch]);
+    const getResumesByUserId = useCallback((userId: string) => resumes.filter((resume: Resume) => resume.userId === userId), [resumes]); 
   
-    const uploadResume = async (
+    const uploadResume = useCallback(async (
       file: File,
       userId: string,
       onSuccess?: (resumeId: string) => void
@@ -34,7 +36,7 @@ export const useResumeSlice = () => {
         console.error("Error uploading resume:", err);
         throw err;
       }
-    };
+    }, [dispatch]);
   
     return {
       resumes,
@@ -43,7 +45,7 @@ export const useResumeSlice = () => {
       getResumes,
       getResumeByUserId,
       removeResume,
+      getResumesByUserId,
       uploadResume,
     };
   };
-  

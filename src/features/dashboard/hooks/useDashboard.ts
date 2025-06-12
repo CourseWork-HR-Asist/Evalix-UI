@@ -3,6 +3,7 @@ import { useResumeSlice } from '../../resume/hooks/useResume';
 import { useVacancySlice } from '../../vacancy/hooks/useVacancy';
 import { Resume } from '../../resume/service/type';
 import { Vacancy } from '../../vacancy/service/type';
+import { useUserSlice } from '../../authorization/hooks/useUser';
 
 interface DashboardStats {
   totalResumes: number;
@@ -20,8 +21,10 @@ interface UseDashboardResult {
 }
 
 export const useDashboard = (): UseDashboardResult => {
-  const { resumes, loading: resumesLoading, error: resumesError, getResumes } = useResumeSlice();
-  const { vacancies, loading: vacanciesLoading, error: vacanciesError, getVacancies } = useVacancySlice();
+  const { user } = useUserSlice();
+  const { resumes, loading: resumesLoading, error: resumesError, getResumeByUserId } = useResumeSlice();
+  const { vacancies, loading: vacanciesLoading, error: vacanciesError, getVacancyByUserId } = useVacancySlice();
+
   const [stats, setStats] = useState<DashboardStats>({
     totalResumes: 0,
     totalVacancies: 0,
@@ -30,10 +33,11 @@ export const useDashboard = (): UseDashboardResult => {
   });
 
   useEffect(() => {
-    getResumes();
-    getVacancies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (user && user.id) {
+      getVacancyByUserId(user.id);
+      getResumeByUserId(user.id);
+    }
+  }, [user, getResumeByUserId, getVacancyByUserId]);
 
   useEffect(() => {
     if (resumes && vacancies) {
