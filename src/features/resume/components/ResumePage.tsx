@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, ComponentProps } from "react";
 import { useResumeSlice } from "../hooks/useResume";
 import {
   DocumentIcon,
@@ -15,6 +15,9 @@ import ActionButton from "../../../components/ui/buttons/ActionButton";
 import UploadResumeModal from "./UploadResumeModal";
 import { useUserSlice } from "../../authorization/hooks/useUser";
 import DeleteConfirmationModal from "../../../components/ui/modals/DeleteConfirmationModal";
+import { SearchInput } from "../../../components/form/SearchInput";
+import { Checkbox, Typography } from "@material-tailwind/react";
+import { materialProps } from "../../../components/ui/helpers/materialTailwind";
 
 interface ResumeCardProps {
   resume: Resume;
@@ -127,6 +130,8 @@ const ResumeList = () => {
   const { user } = useUserSlice();
   const { resumes, loading, error, getResumes, removeResume } =
     useResumeSlice();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showMyResumes, setShowMyResumes] = useState(false);
 
   const handleUploadModalOpen = () => {
     setOpenUploadModal(true);
@@ -138,8 +143,7 @@ const ResumeList = () => {
 
   useEffect(() => {
     getResumes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getResumes]);
 
   const handleDownload = (url: string) => {
     window.open(url, "_blank");
@@ -150,6 +154,19 @@ const ResumeList = () => {
     getResumes();
   };
 
+  const filteredResumes = useMemo(() => {
+    return resumes
+      .filter((resume) => {
+        if (!showMyResumes) return true;
+        return resume.userId === user?.id;
+      })
+      .filter((resume) => {
+        if (!searchTerm) return true;
+        const searchLower = searchTerm.toLowerCase();
+        return resume.originalFileName.toLowerCase().includes(searchLower);
+      });
+  }, [resumes, searchTerm, showMyResumes, user?.id]);
+
   return (
     <ContentCard className="p-2">
       {loading ? (
@@ -158,19 +175,44 @@ const ResumeList = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
                 Resumes
               </h1>
               <p className="text-gray-600 dark:text-gray-300">
                 Browse all uploaded resumes
               </p>
             </div>
-            <ActionButton onClick={handleUploadModalOpen}>
-              <PlusIcon className="h-4 w-4 md:h-4 md:w-4" />
-              <span>Upload Resume</span>
-            </ActionButton>
+            <div className="flex items-center gap-4 flex-grow justify-end">
+              <div className="w-72">
+                <SearchInput
+                  search={searchTerm}
+                  onSearchChange={setSearchTerm}
+                />
+              </div>
+              <div className="flex items-center">
+                <Checkbox
+                  id="my-resumes"
+                  checked={showMyResumes}
+                  onChange={(e) => setShowMyResumes(e.target.checked)}
+                  color="blue"
+                  {...materialProps<ComponentProps<typeof Checkbox>>()}
+                />
+                <Typography
+                  variant="small"
+                  color="gray"
+                  htmlFor="my-resumes"
+                  className="font-normal cursor-pointer select-none dark:text-gray-300"
+                >
+                  Only my resumes
+                </Typography>
+              </div>
+              <ActionButton onClick={handleUploadModalOpen}>
+                <PlusIcon className="h-4 w-4 md:h-4 md:w-4" />
+                <span>Upload Resume</span>
+              </ActionButton>
+            </div>
           </div>
 
           {error && (
@@ -196,15 +238,15 @@ const ResumeList = () => {
             </div>
           )}
 
-          {resumes.length === 0 ? (
+          {filteredResumes.length === 0 ? (
             <ContentCard className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
               <div className="text-blue-600 dark:text-blue-300 font-medium text-center p-6">
-                No resumes found. Upload a resume to get started.
+                No resumes found matching your criteria.
               </div>
             </ContentCard>
           ) : (
             <div className="grid grid-cols-1 gap-6">
-              {resumes.map((resume: Resume) => (
+              {filteredResumes.map((resume: Resume) => (
                 <ResumeCard
                   key={resume.id}
                   resume={resume}

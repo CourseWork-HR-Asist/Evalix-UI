@@ -32,7 +32,6 @@ import { useVacancySlice } from "../hooks/useVacancy";
 import ActionButton from "../../../components/ui/buttons/ActionButton";
 import AddEvaluationModal from "../../evaluation/components/AddEvaluationModal";
 import { useEvaluationSlice } from "../../evaluation/hooks/useEvaluation";
-// Resume handling is now in AddEvaluationModal
 
 import BaseModal from "../../../components/ui/modals/BaseModal";
 import { Vacancy, levelOptions } from "../service/type";
@@ -41,10 +40,9 @@ import DeleteConfirmationModal from "../../../components/ui/modals/DeleteConfirm
 import { Evaluation } from "../../evaluation/service/type";
 import EvaluationDetailModal from "./EvaluationDetailModal";
 import { getScoreInfo } from "../untils/getScoreInfo";
-// Importing the skill editing modal
 import VacancySkillModal from "./VacancySkillModal";
+import LoadingOverlay from "../../../components/ui/LoadingOverlay"; // Import the new component
 
-// Component Props Interfaces
 interface VacancyDetailModalProps {
   open: boolean;
   handler: () => void;
@@ -84,7 +82,6 @@ interface EvaluationsTableProps {
   truncateText: (text: string, maxLength: number) => string;
 }
 
-// Sub-component: Header with actions
 function VacancyHeader({ title, createdAt }: VacancyHeaderProps) {
   return (
     <div className="flex justify-between items-center">
@@ -103,11 +100,9 @@ function VacancyHeader({ title, createdAt }: VacancyHeaderProps) {
   );
 }
 
-// Sub-component: Vacancy Info (left column)
 function VacancyInfo({ vacancy }: VacancyInfoProps) {
   return (
     <div className="space-y-4">
-      {/* Author info */}
       <div className="flex items-center mb-4">
         <UserCircleIcon className="h-5 w-5 text-gray-600 mr-2" />
         <span className="text-gray-700 dark:text-gray-300">
@@ -117,7 +112,6 @@ function VacancyInfo({ vacancy }: VacancyInfoProps) {
         </span>
       </div>
 
-      {/* Education */}
       <div className="bg-gray-50 dark:bg-[#333] p-4 rounded-lg">
         <div className="flex items-center mb-2">
           <AcademicCapIcon className="h-5 w-5 text-blue-600 mr-2" />
@@ -146,7 +140,6 @@ function VacancyInfo({ vacancy }: VacancyInfoProps) {
   );
 }
 
-// Sub-component: Skills section
 function VacancySkills({
   skills,
   isAuthor,
@@ -447,10 +440,32 @@ export function VacancyDetailModal({
   const [skillModalOpen, setSkillModalOpen] = useState(false);
   const [isAddingSkill, setIsAddingSkill] = useState(false);
 
+  const [deleteSkillConfirmOpen, setDeleteSkillConfirmOpen] = useState(false);
+  const [skillToDeleteIndex, setSkillToDeleteIndex] = useState<number | null>(
+    null
+  );
+
+  const [isLoading, setIsLoading] = useState(false); // State for loader
+
+  const loadingMessages = ["Loading...", "Please wait...", "Almost there..."];
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setCurrentMessageIndex(
+          (prevIndex) => (prevIndex + 1) % loadingMessages.length
+        );
+      }, 2000); // Change message every 2 seconds
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     if (open && vacancy.id) {
-      getEvaluationsByVacancyId(vacancy.id);
-      getVacancyById(vacancy.id);
+      setIsLoading(true); // Show loader
+      getEvaluationsByVacancyId(vacancy.id).finally(() => setIsLoading(false)); // Hide loader after fetching
+      getVacancyById(vacancy.id).finally(() => setIsLoading(false)); // Hide loader after fetching
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, vacancy.id]);
@@ -498,27 +513,34 @@ export function VacancyDetailModal({
     return Promise.resolve();
   };
 
-  const handleDeleteSkill = async (skillIndex: number) => {
-    if (!activeVacancy.skills) return;
+  const handleDeleteSkillConfirm = async () => {
+    if (skillToDeleteIndex !== null && activeVacancy.skills) {
+      const skillToDelete = activeVacancy.skills[skillToDeleteIndex];
+      if (skillToDelete.id) {
+        await removeVacancySkill(skillToDelete.id);
 
-    const skillToDelete = activeVacancy.skills[skillIndex];
-    if (skillToDelete.id) {
-      await removeVacancySkill(skillToDelete.id);
+        const updatedSkills = activeVacancy.skills.filter(
+          (_, index) => index !== skillToDeleteIndex
+        );
 
-      const updatedSkills = activeVacancy.skills.filter(
-        (_, index) => index !== skillIndex
-      );
+        setActiveVacancy({
+          ...activeVacancy,
+          skills: updatedSkills,
+        });
 
-      setActiveVacancy({
-        ...activeVacancy,
-        skills: updatedSkills,
-      });
-
-      // Also refresh from server to ensure consistency
-      if (activeVacancy.id) {
-        getVacancyById(activeVacancy.id);
+        // Refresh from server to ensure consistency
+        if (activeVacancy.id) {
+          getVacancyById(activeVacancy.id);
+        }
       }
     }
+    setDeleteSkillConfirmOpen(false);
+    setSkillToDeleteIndex(null);
+  };
+
+  const handleDeleteSkill = async (skillIndex: number) => {
+    setSkillToDeleteIndex(skillIndex);
+    setDeleteSkillConfirmOpen(true);
   };
 
   const handleSkillModalClose = () => {
@@ -607,9 +629,12 @@ export function VacancyDetailModal({
 
   return (
     <>
+      {isLoading && (
+        <LoadingOverlay messages={loadingMessages} currentMessageIndex={currentMessageIndex} />
+      )}
       {skillModalOpen && (
         <VacancySkillModal
-          open={skillModalOpen}
+          open={true}
           onClose={handleSkillModalClose}
           initialSkill={
             !isAddingSkill && activeVacancy.skills && editingSkillIndex !== null
@@ -629,8 +654,8 @@ export function VacancyDetailModal({
         size={"xl"}
         open={open}
         handler={handler}
-        className="bg-white dark:bg-[#2A2A2A] shadow-xl"
-        preventOutsideClose={false}
+        className="bg-gray-50 dark:bg-[#1E1E1E] shadow-2xl"
+        preventOutsideClose={true}
       >
         <DialogHeader
           className="flex justify-between items-center"
@@ -735,6 +760,14 @@ export function VacancyDetailModal({
         message="Are you sure you want to delete this vacancy? This action cannot be undone."
       />
 
+      <DeleteConfirmationModal
+        open={deleteSkillConfirmOpen}
+        handler={() => setDeleteSkillConfirmOpen(false)}
+        onConfirm={handleDeleteSkillConfirm}
+        title="Confirm Skill Deletion"
+        message="Are you sure you want to delete this skill? This action cannot be undone."
+      />
+
       {selectedEvaluation && (
         <EvaluationDetailModal
           open={evaluationDetailOpen}
@@ -754,3 +787,4 @@ export function VacancyDetailModal({
 }
 
 export default VacancyDetailModal;
+
