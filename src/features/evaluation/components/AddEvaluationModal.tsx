@@ -12,7 +12,6 @@ import {
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
-// FromSelect removed as we're now using FormApiSelect
 import FormApiSelect from "../../../components/form/FormApiSelect";
 import FileInput from "../../../components/form/FileInput";
 import { useResumeSlice } from "../../resume/hooks/useResume";
@@ -20,6 +19,7 @@ import { useEvaluationSlice } from "../hooks/useEvaluation";
 import { useUserSlice } from "../../authorization/hooks/useUser";
 import BaseModal from "../../../components/ui/modals/BaseModal";
 import { materialProps } from "../../../components/ui/helpers/materialTailwind";
+import LoadingOverlay from "../../../components/ui/LoadingOverlay"; 
 
 interface FormData {
   resumeId: string;
@@ -46,6 +46,21 @@ const AddEvaluationModal = ({
   const [uploadedResumeId, setUploadedResumeId] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // State for loader
+
+  const loadingMessages = ["Analyzing...", "Please wait...", "Processing..."];
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setCurrentMessageIndex(
+          (prevIndex) => (prevIndex + 1) % loadingMessages.length
+        );
+      }, 2000); // Change message every 2 seconds
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
 
   const { loading, uploadResume } = useResumeSlice();
   const { addEvaluation } = useEvaluationSlice();
@@ -61,12 +76,8 @@ const AddEvaluationModal = ({
   const resumeFile = watch("resumeFile");
   const selectedResumeId = watch("resumeId");
 
-  // We don't need to fetch resumes separately as FormApiSelect does this for us
-  // Removed fetchResumes callback
-
   useEffect(() => {
     if (open) {
-      // No need to fetch resumes as FormApiSelect handles this
       reset();
       setUploadedResumeId(null);
       setIsAnalyzing(false);
@@ -104,14 +115,14 @@ const AddEvaluationModal = ({
     if (!resumeId || !vacancyId) return;
 
     try {
-      setIsAnalyzing(true);
+      setIsLoading(true); // Show loader
       await addEvaluation({ resumeId, vacancyId });
       handler(); // Close modal
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error("Error creating evaluation:", error);
     } finally {
-      setIsAnalyzing(false);
+      setIsLoading(false); // Hide loader
     }
   };
 
@@ -124,8 +135,11 @@ const AddEvaluationModal = ({
       size="md"
       open={open}
       handler={handler}
-      className="bg-white shadow-xl dark:bg-[#2A2A2A]"
+      className="bg-gray-50 shadow-2xl dark:bg-[#1E1E1E]"
     >
+      {isLoading && (
+        <LoadingOverlay messages={loadingMessages} currentMessageIndex={currentMessageIndex} />
+      )}
       <DialogHeader
         className="text-center justify-center text-xl font-bold text-gray-800 dark:text-gray-100"
         {...materialProps<ComponentProps<typeof DialogHeader>>()}
@@ -136,6 +150,17 @@ const AddEvaluationModal = ({
         className="px-6 overflow-y-auto"
         {...materialProps<ComponentProps<typeof DialogBody>>()}
       >
+        {isAnalyzing && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 bg-opacity-75 z-50">
+            <Typography
+              variant="h6"
+              color="blue-gray"
+              className="text-center dark:text-gray-300"
+            >
+              Analysis in progress...
+            </Typography>
+          </div>
+        )}
         <div className="mb-6 dark:text-gray-200">
           <Typography
             variant="h6"
@@ -221,7 +246,6 @@ const AddEvaluationModal = ({
                       Resume uploaded successfully
                     </Typography>
                   </div>
-                  {/* Start Analysis button moved to footer */}
                 </CardBody>
               </Card>
             )}

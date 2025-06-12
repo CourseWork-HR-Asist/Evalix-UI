@@ -149,8 +149,8 @@ export default function VacancySkillModal({
               rules={{
                 required: "Please select experience level",
                 min: {
-                  value: 0,
-                  message: "Experience level must be at least 0",
+                  value: 1,
+                  message: "Experience level must be at least 1",
                 },
                 max: {
                   value: 50,
@@ -185,3 +185,4 @@ export default function VacancySkillModal({
     </BaseModal>
   );
 }
+
