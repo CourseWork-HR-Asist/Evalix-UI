@@ -13,6 +13,7 @@ import { SearchInput } from "../../../components/form/SearchInput";
 import { Checkbox, Typography } from "@material-tailwind/react";
 import { materialProps } from "../../../components/ui/helpers/materialTailwind";
 
+
 const VacancyPage = () => {
   const { vacancies, loading, getVacancies, addVacancy, editVacancy } =
     useVacancySlice();
@@ -95,7 +96,7 @@ const VacancyPage = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
                 Vacancies
@@ -104,12 +105,9 @@ const VacancyPage = () => {
                 Browse all available job positions
               </p>
             </div>
-            <div className="flex items-center gap-4 flex-grow justify-end">
-              <div className="w-72">
-                <SearchInput
-                  search={searchTerm}
-                  onSearchChange={setSearchTerm}
-                />
+            <div className="flex flex-col items-start sm:flex-row sm:items-center gap-4 w-full md:w-auto">
+              <div className="w-full sm:w-72">
+                <SearchInput search={searchTerm} onSearchChange={setSearchTerm} />
               </div>
               <div className="flex items-center">
                 <Checkbox
