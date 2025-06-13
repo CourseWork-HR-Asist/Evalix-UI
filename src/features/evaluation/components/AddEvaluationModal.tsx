@@ -57,7 +57,7 @@ const AddEvaluationModal = ({
         setCurrentMessageIndex(
           (prevIndex) => (prevIndex + 1) % loadingMessages.length
         );
-      }, 2000); // Change message every 2 seconds
+      }, 2000); 
       return () => clearInterval(interval);
     }
   }, [isLoading]);

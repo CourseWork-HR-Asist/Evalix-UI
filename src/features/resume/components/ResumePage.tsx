@@ -125,7 +125,7 @@ const ResumeCard = ({
   );
 };
 
-const ResumeList = () => {
+const ResumePage = () => {
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const { user } = useUserSlice();
   const { resumes, loading, error, getResumes, removeResume } =
@@ -175,7 +175,7 @@ const ResumeList = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
                 Resumes
@@ -184,8 +184,8 @@ const ResumeList = () => {
                 Browse all uploaded resumes
               </p>
             </div>
-            <div className="flex items-center gap-4 flex-grow justify-end">
-              <div className="w-72">
+            <div className="flex flex-col items-start sm:flex-row sm:items-center gap-4 w-full md:w-auto">
+              <div className="w-full sm:w-72">
                 <SearchInput
                   search={searchTerm}
                   onSearchChange={setSearchTerm}
@@ -267,4 +267,4 @@ const ResumeList = () => {
   );
 };
 
-export default ResumeList;
+export default ResumePage;
